@@ -1,5 +1,5 @@
 //
-//  PastQuizzesView.swift
+//  GrowthView.swift
 //  bigfeelings
 //
 //  Created by Christopher Law on 2025-12-07.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-struct PastQuizzesView: View {
+struct GrowthView: View {
     let child: Child
     @State private var quizSessions: [QuizSession] = []
     
@@ -32,7 +32,7 @@ struct PastQuizzesView: View {
                         .font(.system(size: 64))
                         .foregroundColor(.secondary)
                     
-                    Text("No Past Quizzes")
+                    Text("No Growth History")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.primary)
                     
@@ -68,7 +68,7 @@ struct PastQuizzesView: View {
                 }
             }
         }
-        .navigationTitle("Past Quizzes")
+        .navigationTitle("Growth")
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
             loadQuizSessions()

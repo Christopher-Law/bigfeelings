@@ -77,7 +77,7 @@ struct StoriesListView: View {
                                 .accessibilityLabel("Practice Stories")
                                 .accessibilityHint("Read and practice with stories")
                                 
-                                // My Growth tile (if child is selected)
+                                // Growth tile (if child is selected)
                                 if let child = activeChild {
                                     Button(action: {
                                         HapticFeedbackManager.shared.impact(style: .medium)
@@ -85,14 +85,14 @@ struct StoriesListView: View {
                                     }) {
                                         LargeTile(
                                             icon: "chart.line.uptrend.xyaxis",
-                                            title: "My Growth",
+                                            title: "Growth",
                                             subtitle: "View progress",
                                             borderColor: Color.vibrantBlue
                                         )
                                     }
                                     .buttonStyle(TileButtonStyle())
-                                    .accessibilityLabel("View Past Quizzes")
-                                    .accessibilityHint("View \(child.name)'s quiz history and progress")
+                                    .accessibilityLabel("View Growth")
+                                    .accessibilityHint("View \(child.name)'s growth and progress")
                                 }
                             }
                             .padding(.horizontal, 20)
@@ -204,7 +204,7 @@ struct StoriesListView: View {
         .sheet(isPresented: $showPastQuizzes) {
             if let child = activeChild {
                 NavigationStack {
-                    PastQuizzesView(child: child)
+                    GrowthView(child: child)
                 }
             }
         }
