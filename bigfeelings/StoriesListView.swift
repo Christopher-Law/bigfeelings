@@ -14,6 +14,7 @@ struct StoriesListView: View {
     @State private var activeChild: Child?
     @State private var showPastQuizzes = false
     @State private var showAchievements = false
+    @State private var navigateToPractice = false
     
     var body: some View {
         ZStack {
@@ -42,83 +43,61 @@ struct StoriesListView: View {
                     }
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 20) {
-                            // Past Quizzes button (if child is selected)
-                            if let child = activeChild {
-                                Button(action: {
-                                    HapticFeedbackManager.shared.impact(style: .medium)
-                                    showPastQuizzes = true
-                                }) {
-                                    HStack {
-                                        Image(systemName: "chart.line.uptrend.xyaxis")
-                                            .font(.system(size: 20))
-                                        Text("My Growth")
-                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                    }
-                                    .foregroundColor(.primary)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 14)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(Color.white.opacity(0.9))
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 16)
-                                                    .stroke(Color.vibrantBlue.opacity(0.3), lineWidth: 2)
-                                            )
-                                            .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 3)
-                                    )
-                                }
-                                .padding(.horizontal, 20)
-                                .padding(.top, 10)
-                                .accessibilityLabel("View Past Quizzes")
-                                .accessibilityHint("View \(child.name)'s quiz history and progress")
-                            }
-                            
-                            // Start Quiz button
-                            if !stories.isEmpty {
+                        VStack(spacing: 24) {
+                            // Three large tiles
+                            VStack(spacing: 20) {
+                                // Start Quiz tile
                                 Button(action: {
                                     HapticFeedbackManager.shared.impact(style: .medium)
                                     showQuiz = true
                                 }) {
-                                    HStack {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .font(.system(size: 24))
-                                        Text("Start Quiz")
-                                            .font(.system(size: 20, weight: .bold, design: .rounded))
-                                    }
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 18)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(
-                                                LinearGradient(
-                                                    colors: [Color.vibrantGreen, Color.vibrantBlue],
-                                                    startPoint: .leading,
-                                                    endPoint: .trailing
-                                                )
-                                            )
-                                            .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                    LargeTile(
+                                        icon: "checkmark.circle.fill",
+                                        title: "Start Quiz",
+                                        subtitle: "Test your knowledge",
+                                        borderColor: Color.vibrantGreen
                                     )
                                 }
-                                .padding(.horizontal, 20)
+                                .buttonStyle(TileButtonStyle())
                                 .accessibilityLabel("Start Quiz")
                                 .accessibilityHint("Take a quiz with all stories for this age group")
-                            }
-                            
-                            // Stories list (single column)
-                            VStack(spacing: 16) {
-                                ForEach(stories) { story in
-                                    StoryCard(
-                                        story: story,
-                                        isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id),
-                                        isFavorited: activeChild != nil ? UserDefaultsManager.shared.isStoryFavorited(storyId: story.id, childId: activeChild!.id) : false
+                                
+                                // Practice tile
+                                NavigationLink(destination: PracticeStoriesView(stories: stories, activeChild: activeChild)) {
+                                    LargeTile(
+                                        icon: "book.fill",
+                                        title: "Practice",
+                                        subtitle: "Read stories",
+                                        borderColor: Color.vibrantOrange
                                     )
+                                }
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    HapticFeedbackManager.shared.impact(style: .medium)
+                                })
+                                .accessibilityLabel("Practice Stories")
+                                .accessibilityHint("Read and practice with stories")
+                                
+                                // My Growth tile (if child is selected)
+                                if let child = activeChild {
+                                    Button(action: {
+                                        HapticFeedbackManager.shared.impact(style: .medium)
+                                        showPastQuizzes = true
+                                    }) {
+                                        LargeTile(
+                                            icon: "chart.line.uptrend.xyaxis",
+                                            title: "My Growth",
+                                            subtitle: "View progress",
+                                            borderColor: Color.vibrantBlue
+                                        )
+                                    }
+                                    .buttonStyle(TileButtonStyle())
+                                    .accessibilityLabel("View Past Quizzes")
+                                    .accessibilityHint("View \(child.name)'s quiz history and progress")
                                 }
                             }
                             .padding(.horizontal, 20)
+                            .padding(.vertical, 20)
                         }
-                        .padding(.vertical, 20)
                     }
                     .scrollIndicators(.visible)
                 }
@@ -201,7 +180,7 @@ struct StoriesListView: View {
                 }
             }
         }
-        .navigationTitle("Stories")
+        .navigationTitle(activeChild?.name ?? "Stories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -349,6 +328,52 @@ struct StoryCard: View {
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         .accessibilityLabel("\(story.title) with \(story.animal), feeling \(story.feeling)\(isFavorited ? ", favorited" : "")\(isCompleted ? ", completed" : "")")
         .accessibilityHint("Tap to read this story")
+    }
+}
+
+struct LargeTile: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let borderColor: Color
+    
+    var body: some View {
+        VStack(spacing: 14) {
+            // Icon
+            Image(systemName: icon)
+                .font(.system(size: 36, weight: .semibold))
+                .foregroundColor(borderColor)
+            
+            VStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
+                
+                Text(subtitle)
+                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .foregroundColor(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 140)
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(borderColor.opacity(0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(borderColor.opacity(0.3), lineWidth: 2.5)
+                )
+                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+        )
+    }
+}
+
+struct TileButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }
 
