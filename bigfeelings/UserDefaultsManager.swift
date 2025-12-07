@@ -13,6 +13,8 @@ class UserDefaultsManager {
     private let selectedAgeKey = "selectedAge"
     private let completedStoriesKey = "completedStories"
     private let quizSessionsKey = "quizSessions"
+    private let childrenKey = "children"
+    private let selectedChildIdKey = "selectedChildId"
     
     private init() {}
     
@@ -83,6 +85,62 @@ class UserDefaultsManager {
         return getQuizSessions(for: ageRange)
             .sorted { $0.startDate > $1.startDate }
             .first
+    }
+    
+    // MARK: - Child Management
+    
+    func saveChild(_ child: Child) {
+        var children = getChildren()
+        // Remove old child with same ID if exists
+        children.removeAll { $0.id == child.id }
+        children.append(child)
+        
+        if let encoded = try? JSONEncoder().encode(children) {
+            UserDefaults.standard.set(encoded, forKey: childrenKey)
+        }
+    }
+    
+    func getChildren() -> [Child] {
+        guard let data = UserDefaults.standard.data(forKey: childrenKey),
+              let children = try? JSONDecoder().decode([Child].self, from: data) else {
+            return []
+        }
+        return children.sorted { $0.name < $1.name }
+    }
+    
+    func getChild(id: String) -> Child? {
+        return getChildren().first { $0.id == id }
+    }
+    
+    func deleteChild(id: String) {
+        var children = getChildren()
+        children.removeAll { $0.id == id }
+        
+        if let encoded = try? JSONEncoder().encode(children) {
+            UserDefaults.standard.set(encoded, forKey: childrenKey)
+        }
+        
+        // Clear selected child if it was deleted
+        if getSelectedChildId() == id {
+            clearSelectedChild()
+        }
+    }
+    
+    func saveSelectedChildId(_ childId: String) {
+        UserDefaults.standard.set(childId, forKey: selectedChildIdKey)
+    }
+    
+    func getSelectedChildId() -> String? {
+        return UserDefaults.standard.string(forKey: selectedChildIdKey)
+    }
+    
+    func getSelectedChild() -> Child? {
+        guard let childId = getSelectedChildId() else { return nil }
+        return getChild(id: childId)
+    }
+    
+    func clearSelectedChild() {
+        UserDefaults.standard.removeObject(forKey: selectedChildIdKey)
     }
 }
 

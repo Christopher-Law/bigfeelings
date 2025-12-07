@@ -17,21 +17,8 @@ struct BigFeelingsApp: App {
 }
 
 struct ContentView: View {
-    @State private var selectedAge: AgeRange?
-    
     var body: some View {
-        NavigationStack {
-            Group {
-                if let age = selectedAge {
-                    StoriesListView()
-                } else {
-                    AgeSelectionView()
-                }
-            }
-            .onAppear {
-                selectedAge = UserDefaultsManager.shared.getSelectedAge()
-            }
-        }
+        ChildrenListView()
     }
 }
 

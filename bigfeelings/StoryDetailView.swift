@@ -14,6 +14,7 @@ struct StoryDetailView: View {
     @State private var showFeedback = false
     @State private var showEnding = false
     @State private var shuffledChoices: [Choice] = []
+    @State private var activeChild: Child?
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -115,12 +116,27 @@ struct StoryDetailView: View {
                     .padding(.bottom, 30)
                 }
             }
+            
+            // Active child indicator at the bottom
+            if let child = activeChild {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ActiveChildIndicator(child: child)
+                            .padding(.bottom, 20)
+                        Spacer()
+                    }
+                }
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             verifyAgeMatch()
             // Shuffle choices when view appears
             shuffledChoices = story.choices.shuffled()
+            // Load active child
+            activeChild = UserDefaultsManager.shared.getSelectedChild()
         }
         .sheet(isPresented: $showFeedback) {
             if let choice = selectedChoice {

@@ -10,8 +10,8 @@ import SwiftUI
 struct StoriesListView: View {
     @State private var stories: [Story] = []
     @State private var selectedAge: AgeRange?
-    @State private var showAgeSelection = false
     @State private var showQuiz = false
+    @State private var activeChild: Child?
     
     var body: some View {
         ZStack {
@@ -86,6 +86,74 @@ struct StoriesListView: View {
                     }
                     .scrollIndicators(.visible)
                 }
+            } else if activeChild == nil {
+                VStack(spacing: 20) {
+                    Image(systemName: "person.crop.circle.badge.questionmark")
+                        .font(.system(size: 64))
+                        .foregroundColor(.secondary)
+                    
+                    Text("No child selected")
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                    
+                    Text("Please select a child to view stories")
+                        .font(.system(size: 16, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    NavigationLink(destination: ChildrenListView()) {
+                        Text("Select Child")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.vibrantGreen, Color.vibrantBlue],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                            )
+                    }
+                    .padding(.top, 20)
+                }
+            } else if activeChild?.age == nil {
+                VStack(spacing: 20) {
+                    Image(systemName: "calendar.badge.exclamationmark")
+                        .font(.system(size: 64))
+                        .foregroundColor(.orange)
+                    
+                    Text("Age not set")
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                    
+                    Text("Please set an age for \(activeChild?.name ?? "this child") to view stories")
+                        .font(.system(size: 16, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                    
+                    NavigationLink(destination: ChildrenListView()) {
+                        Text("Edit Child")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.vibrantGreen, Color.vibrantBlue],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                            )
+                    }
+                    .padding(.top, 20)
+                }
             } else {
                 VStack {
                     ProgressView()
@@ -96,13 +164,27 @@ struct StoriesListView: View {
                         .padding(.top, 16)
                 }
             }
+            
+            // Active child indicator at the bottom
+            if let child = activeChild {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ActiveChildIndicator(child: child)
+                            .padding(.bottom, 20)
+                        Spacer()
+                    }
+                }
+            }
         }
         .navigationTitle("Stories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Change Age") {
-                    showAgeSelection = true
+                Button("Change Child") {
+                    // Navigate back to children list
+                    // This will be handled by the navigation stack
                 }
                 .font(.system(size: 16, weight: .medium, design: .rounded))
             }
@@ -110,32 +192,31 @@ struct StoriesListView: View {
         .onAppear {
             loadStories()
         }
-        .sheet(isPresented: $showAgeSelection) {
-            NavigationStack {
-                AgeSelectionView()
-            }
-            .onDisappear {
-                // Reload stories when age selection is dismissed
-                loadStories()
-            }
-        }
         .fullScreenCover(isPresented: $showQuiz) {
             if let ageRange = selectedAge {
                 // Randomly select 6 stories for the quiz
                 let quizStories = Array(stories.shuffled().prefix(6))
-                QuizView(stories: quizStories, ageRange: ageRange)
+                QuizView(stories: quizStories, ageRange: ageRange, child: activeChild)
             }
         }
     }
     
     private func loadStories() {
-        selectedAge = UserDefaultsManager.shared.getSelectedAge()
+        activeChild = UserDefaultsManager.shared.getSelectedChild()
         
-        if let ageRange = selectedAge {
+        // Get age range from the selected child's age
+        if let child = activeChild, let ageRange = child.ageRange {
+            selectedAge = ageRange
+            UserDefaultsManager.shared.saveSelectedAge(ageRange)
             stories = StoryLoader.shared.getStories(for: ageRange)
         } else {
-            // No age selected, show age selection
-            showAgeSelection = true
+            // Try to get from UserDefaults as fallback (for backwards compatibility)
+            selectedAge = UserDefaultsManager.shared.getSelectedAge()
+            if let ageRange = selectedAge {
+                stories = StoryLoader.shared.getStories(for: ageRange)
+            } else {
+                stories = []
+            }
         }
     }
 }

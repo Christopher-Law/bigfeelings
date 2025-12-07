@@ -1,0 +1,247 @@
+//
+//  ChildrenListView.swift
+//  bigfeelings
+//
+//  Created by Christopher Law on 2025-12-07.
+//
+
+import SwiftUI
+
+struct ChildrenListView: View {
+    @State private var children: [Child] = []
+    @State private var showAddChild = false
+    @State private var selectedChild: Child?
+    @State private var navigateToStories = false
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                // Gradient background
+                LinearGradient(
+                    colors: [Color.lavender.opacity(0.3), Color.mint.opacity(0.3)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                if children.isEmpty {
+                    VStack(spacing: 20) {
+                        Image(systemName: "person.2.fill")
+                            .font(.system(size: 64))
+                            .foregroundColor(.secondary)
+                        
+                        Text("No children yet")
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
+                            .foregroundColor(.primary)
+                        
+                        Text("Add a child to get started")
+                            .font(.system(size: 16, design: .rounded))
+                            .foregroundColor(.secondary)
+                        
+                        Button(action: {
+                            showAddChild = true
+                        }) {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 20))
+                                Text("Add Child")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.vibrantGreen, Color.vibrantBlue],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                            )
+                        }
+                        .padding(.top, 20)
+                    }
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(children) { child in
+                                ChildCard(child: child) {
+                                    selectChild(child)
+                                } onEdit: {
+                                    selectedChild = child
+                                    showAddChild = true
+                                } onDelete: {
+                                    deleteChild(child)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 20)
+                    }
+                    .scrollIndicators(.visible)
+                }
+            }
+            .navigationTitle("Children")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        selectedChild = nil
+                        showAddChild = true
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                }
+            }
+            .onAppear {
+                loadChildren()
+            }
+            .sheet(isPresented: $showAddChild) {
+                NavigationStack {
+                    ChildFormView(child: selectedChild) { savedChild in
+                        UserDefaultsManager.shared.saveChild(savedChild)
+                        loadChildren()
+                        selectedChild = nil
+                        showAddChild = false
+                    }
+                }
+            }
+            .navigationDestination(isPresented: $navigateToStories) {
+                StoriesListView()
+            }
+        }
+    }
+    
+    private func loadChildren() {
+        children = UserDefaultsManager.shared.getChildren()
+    }
+    
+    private func selectChild(_ child: Child) {
+        HapticFeedbackManager.shared.impact(style: .medium)
+        UserDefaultsManager.shared.saveSelectedChildId(child.id)
+        
+        // If child has an age range, save it and navigate to stories
+        if let ageRange = child.ageRange {
+            UserDefaultsManager.shared.saveSelectedAge(ageRange)
+            navigateToStories = true
+        } else {
+            // If no age range is set, show an alert or navigate to edit
+            // For now, just navigate - the StoriesListView will handle showing a message
+            navigateToStories = true
+        }
+    }
+    
+    private func deleteChild(_ child: Child) {
+        HapticFeedbackManager.shared.impact(style: .light)
+        UserDefaultsManager.shared.deleteChild(id: child.id)
+        loadChildren()
+    }
+}
+
+struct ChildCard: View {
+    let child: Child
+    let onTap: () -> Void
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+    
+    @State private var isPressed = false
+    @State private var showDeleteConfirmation = false
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            // Avatar/Icon
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.vibrantBlue.opacity(0.3), Color.vibrantGreen.opacity(0.3)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 60, height: 60)
+                
+                Text(child.name.prefix(1).uppercased())
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            
+            // Content
+            VStack(alignment: .leading, spacing: 6) {
+                Text(child.name)
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundColor(.primary)
+                
+                if let age = child.age {
+                    Text("Age \(age)")
+                        .font(.system(size: 16, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    if let ageRange = child.ageRange {
+                        Text(ageRange.displayName)
+                            .font(.system(size: 14, design: .rounded))
+                            .foregroundColor(.secondary.opacity(0.8))
+                    }
+                } else {
+                    Text("No age set")
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(.orange)
+                        .italic()
+                }
+                
+                if let notes = child.notes, !notes.isEmpty {
+                    Text(notes)
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                }
+            }
+            
+            Spacer()
+            
+            // Actions
+            Menu {
+                Button(action: onEdit) {
+                    Label("Edit", systemImage: "pencil")
+                }
+                
+                Button(role: .destructive, action: {
+                    showDeleteConfirmation = true
+                }) {
+                    Label("Delete", systemImage: "trash")
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 24))
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        )
+        .onTapGesture {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                isPressed = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isPressed = false
+                onTap()
+            }
+        }
+        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
+        .alert("Delete Child", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive, action: onDelete)
+        } message: {
+            Text("Are you sure you want to delete \(child.name)? This action cannot be undone.")
+        }
+    }
+}

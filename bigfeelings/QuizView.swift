@@ -10,6 +10,7 @@ import SwiftUI
 struct QuizView: View {
     let stories: [Story]
     let ageRange: AgeRange
+    let child: Child?
     @Environment(\.dismiss) private var dismiss
     
     @State private var currentIndex = 0
@@ -169,6 +170,23 @@ struct QuizView: View {
                     Button("Exit") {
                         dismiss()
                     }
+                }
+            }
+            .safeAreaInset(edge: .bottom) {
+                if let child = child {
+                    HStack {
+                        Spacer()
+                        ActiveChildIndicator(child: child)
+                        Spacer()
+                    }
+                    .padding(.vertical, 8)
+                    .background(
+                        LinearGradient(
+                            colors: [Color.white.opacity(0.95), Color.white.opacity(0.95)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                 }
             }
             .onAppear {

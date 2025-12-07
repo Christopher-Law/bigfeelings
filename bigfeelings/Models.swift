@@ -149,3 +149,36 @@ struct QuizScore {
     }
 }
 
+// MARK: - Child/Client Models
+
+struct Child: Codable, Identifiable {
+    let id: String
+    var name: String
+    var age: Int?
+    var notes: String?
+    let createdAt: Date
+    var updatedAt: Date
+    
+    init(id: String = UUID().uuidString, name: String, age: Int? = nil, notes: String? = nil, createdAt: Date = Date(), updatedAt: Date = Date()) {
+        self.id = id
+        self.name = name
+        self.age = age
+        self.notes = notes
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+    
+    // Calculate age range from numeric age
+    var ageRange: AgeRange? {
+        guard let age = age else { return nil }
+        switch age {
+        case 4...6: return .fourToSix
+        case 7...9: return .sevenToNine
+        case 10...12: return .tenToTwelve
+        default:
+            // Default to middle range if age is outside expected range
+            return .sevenToNine
+        }
+    }
+}
+
