@@ -10,8 +10,6 @@ import SwiftUI
 struct PastQuizzesView: View {
     let child: Child
     @State private var quizSessions: [QuizSession] = []
-    @State private var selectedSession: QuizSession?
-    @State private var showQuizDetails = false
     
     private var completedSessions: [QuizSession] {
         quizSessions.filter { $0.isCompleted }
@@ -56,10 +54,7 @@ struct PastQuizzesView: View {
                         // Quiz sessions list
                         VStack(spacing: 16) {
                             ForEach(completedSessions) { session in
-                                QuizSessionCard(session: session) {
-                                    selectedSession = session
-                                    showQuizDetails = true
-                                }
+                                QuizSessionCard(session: session)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -72,13 +67,6 @@ struct PastQuizzesView: View {
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
             loadQuizSessions()
-        }
-        .sheet(isPresented: $showQuizDetails) {
-            if let session = selectedSession {
-                QuizResultsView(session: session, onDismiss: {
-                    showQuizDetails = false
-                })
-            }
         }
     }
     
@@ -170,7 +158,6 @@ struct ProgressOverviewCard: View {
 
 struct QuizSessionCard: View {
     let session: QuizSession
-    let onTap: () -> Void
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -184,68 +171,59 @@ struct QuizSessionCard: View {
     }
     
     var body: some View {
-        Button(action: {
-            HapticFeedbackManager.shared.impact(style: .light)
-            onTap()
-        }) {
-            VStack(alignment: .leading, spacing: 12) {
-                // Header with date and grade
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(dateFormatter.string(from: session.startDate))
-                            .font(.system(size: 16, weight: .semibold, design: .rounded))
-                            .foregroundColor(.primary)
-                        
-                        Text(session.ageRange.displayName)
-                            .font(.system(size: 14, design: .rounded))
-                            .foregroundColor(.secondary)
-                    }
+        VStack(alignment: .leading, spacing: 12) {
+            // Header with date and grade
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(dateFormatter.string(from: session.startDate))
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.primary)
                     
-                    Spacer()
-                    
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text(score.overallGrade)
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundColor(gradeColor)
-                        
-                        Text("\(Int(score.goodPercentage))%")
-                            .font(.system(size: 14, design: .rounded))
-                            .foregroundColor(.secondary)
-                    }
+                    Text(session.ageRange.displayName)
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(.secondary)
                 }
                 
-                // Score breakdown
-                HStack(spacing: 16) {
-                    ScoreBadge(emoji: "🌟", count: score.good, color: .vibrantGreen)
-                    ScoreBadge(emoji: "🤔", count: score.okay, color: Color(hex: "F59E0B"))
-                    ScoreBadge(emoji: "🌱", count: score.bad, color: Color(hex: "06B6D4"))
-                    ScoreBadge(emoji: "💭", count: score.unrelated, color: Color(hex: "A855F7"))
-                    
-                    Spacer()
-                }
+                Spacer()
                 
-                // Stories count
-                HStack {
-                    Image(systemName: "book.fill")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                    Text("\(session.totalStories) stories")
-                        .font(.system(size: 13, design: .rounded))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(score.overallGrade)
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundColor(gradeColor)
+                    
+                    Text("\(Int(score.goodPercentage))%")
+                        .font(.system(size: 14, design: .rounded))
                         .foregroundColor(.secondary)
                 }
             }
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.white.opacity(0.9))
-                    .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
-            )
+            
+            // Score breakdown
+            HStack(spacing: 16) {
+                ScoreBadge(emoji: "🌟", count: score.good, color: .vibrantGreen)
+                ScoreBadge(emoji: "🤔", count: score.okay, color: Color(hex: "F59E0B"))
+                ScoreBadge(emoji: "🌱", count: score.bad, color: Color(hex: "06B6D4"))
+                ScoreBadge(emoji: "💭", count: score.unrelated, color: Color(hex: "A855F7"))
+                
+                Spacer()
+            }
+            
+            // Stories count
+            HStack {
+                Image(systemName: "book.fill")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                Text("\(session.totalStories) stories")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
         }
-        .buttonStyle(PlainButtonStyle())
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white.opacity(0.9))
+                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        )
     }
     
     private var gradeColor: Color {
