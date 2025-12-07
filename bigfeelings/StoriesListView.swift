@@ -121,7 +121,9 @@ struct StoriesListView: View {
         }
         .fullScreenCover(isPresented: $showQuiz) {
             if let ageRange = selectedAge {
-                QuizView(stories: stories, ageRange: ageRange)
+                // Randomly select 6 stories for the quiz
+                let quizStories = Array(stories.shuffled().prefix(6))
+                QuizView(stories: quizStories, ageRange: ageRange)
             }
         }
     }

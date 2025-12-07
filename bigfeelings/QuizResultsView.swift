@@ -10,13 +10,15 @@ import UIKit
 
 struct QuizResultsView: View {
     let session: QuizSession
+    let onDismiss: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
     @State private var navigateToStories = false
     
     private let score: QuizScore
     
-    init(session: QuizSession) {
+    init(session: QuizSession, onDismiss: (() -> Void)? = nil) {
         self.session = session
+        self.onDismiss = onDismiss
         self.score = session.score
     }
     
@@ -77,11 +79,11 @@ struct QuizResultsView: View {
                             )
                             
                             ScoreRow(
-                                label: "Needs Practice",
+                                label: "Learning Moments",
                                 count: score.bad,
                                 total: score.total,
-                                color: Color(hex: "F97316"), // Darker orange
-                                emoji: "💭"
+                                color: Color(hex: "06B6D4"), // Softer teal/cyan - growth-oriented
+                                emoji: "🌱"
                             )
                             
                             ScoreRow(
@@ -163,7 +165,12 @@ struct QuizResultsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
+                        // Dismiss results view first, then trigger callback to dismiss quiz view
                         dismiss()
+                        // Small delay to ensure results view dismisses first
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            onDismiss?()
+                        }
                     }
                 }
             }
@@ -178,7 +185,7 @@ struct QuizResultsView: View {
         case "Excellent": return "🎉"
         case "Good": return "🌟"
         case "Fair": return "👍"
-        default: return "💪"
+        default: return "🌱"
         }
     }
     
@@ -187,7 +194,7 @@ struct QuizResultsView: View {
         case "Excellent": return .vibrantGreen
         case "Good": return .vibrantBlue
         case "Fair": return Color(hex: "F59E0B") // Darker amber/orange
-        default: return Color(hex: "EF4444") // Darker red/orange
+        default: return Color(hex: "06B6D4") // Softer teal/cyan - growth-oriented
         }
     }
     

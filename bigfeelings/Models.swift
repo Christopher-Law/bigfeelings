@@ -60,9 +60,9 @@ enum ChoiceType: String, Codable {
     var title: String {
         switch self {
         case .good: return "Great Choice!"
-        case .okay: return "Let's Think About This"
-        case .bad: return "Let's Think"
-        case .unrelated: return "Let's Think"
+        case .okay: return "Almost There!"
+        case .bad: return "Let's Try a Different Way"
+        case .unrelated: return "Let's Focus on This"
         }
     }
 }
@@ -136,7 +136,7 @@ struct QuizScore {
         case 80...100: return "Excellent"
         case 60..<80: return "Good"
         case 40..<60: return "Fair"
-        default: return "Needs Practice"
+        default: return "Keep Learning"
         }
     }
     

@@ -176,9 +176,15 @@ struct QuizView: View {
             }
             .fullScreenCover(isPresented: $showResults) {
                 if let session = completedSession {
-                    QuizResultsView(session: session)
+                    QuizResultsView(session: session, onDismiss: {
+                        showResults = false
+                        dismiss()
+                    })
                 } else if let session = quizSession {
-                    QuizResultsView(session: session)
+                    QuizResultsView(session: session, onDismiss: {
+                        showResults = false
+                        dismiss()
+                    })
                 } else {
                     // Fallback - shouldn't happen, but just in case
                     VStack {
@@ -186,6 +192,7 @@ struct QuizView: View {
                             .font(.system(size: 18, design: .rounded))
                         Button("Close") {
                             showResults = false
+                            dismiss()
                         }
                     }
                 }

@@ -664,6 +664,450 @@
       }
     ],
     "endingMessage": "You showed great communication skills! Feeling misunderstood is frustrating, but finding ways to express yourself clearly helps others understand what matters to you. Keep trying! 🤖"
+  },
+  {
+    "id": "waiting-turn",
+    "ageRange": "4-6",
+    "animal": "Elephant",
+    "animalEmoji": "🐘",
+    "title": "Waiting My Turn",
+    "feeling": "impatient",
+    "story": "Elephant was waiting in line for the slide at the playground. Other animals kept cutting in front. Elephant had been waiting a long time and felt impatient. They wanted to push ahead too. What should Elephant do?",
+    "imagePrompt": "An elephant waiting patiently in a line at the playground, looking a bit frustrated",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Wait patiently, ask a grown-up for help if needed, and remember that waiting is part of playing fairly",
+        "type": "good",
+        "explanation": "Great patience! Waiting our turn shows respect for others and helps everyone have fun. If someone cuts, asking a grown-up for help is okay!"
+      },
+      {
+        "id": "b",
+        "text": "Push ahead of everyone else",
+        "type": "bad",
+        "explanation": "Pushing ahead might make others feel sad or angry. Waiting our turn helps everyone have fun and feel fair!"
+      },
+      {
+        "id": "c",
+        "text": "Leave and play something else",
+        "type": "okay",
+        "explanation": "It's okay to play something else if waiting feels too hard, but learning to wait our turn is an important skill!"
+      },
+      {
+        "id": "d",
+        "text": "Yell at the other animals",
+        "type": "unrelated",
+        "explanation": "Yelling usually makes things worse. It's better to wait patiently or ask a grown-up for help if someone isn't being fair!"
+      }
+    ],
+    "endingMessage": "You showed wonderful patience! Waiting our turn can be hard, but it helps everyone have fun together. Being patient is a superpower! ⏰"
+  },
+  {
+    "id": "big-feelings",
+    "ageRange": "4-6",
+    "animal": "Tiger",
+    "animalEmoji": "🐯",
+    "title": "Big Feelings",
+    "feeling": "angry",
+    "story": "Tiger's tower of blocks fell down right before they finished building it. Tiger felt very angry and wanted to throw the blocks and scream. What should Tiger do?",
+    "imagePrompt": "A tiger looking angry next to fallen blocks, feeling frustrated",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Take deep breaths, count to five, and then try building again",
+        "type": "good",
+        "explanation": "Excellent! Taking deep breaths helps our bodies calm down when we feel angry. Then we can try again with a clear mind!"
+      },
+      {
+        "id": "b",
+        "text": "Throw the blocks and scream",
+        "type": "bad",
+        "explanation": "Throwing things can hurt others or break things. It's better to use our words or take deep breaths to calm down!"
+      },
+      {
+        "id": "c",
+        "text": "Cry and give up",
+        "type": "okay",
+        "explanation": "It's okay to feel sad when things don't work out, but taking a break and trying again can help us feel better!"
+      },
+      {
+        "id": "d",
+        "text": "Blame someone else for the blocks falling",
+        "type": "unrelated",
+        "explanation": "Sometimes things just happen! It's better to focus on how we can handle our feelings and try again!"
+      }
+    ],
+    "endingMessage": "You handled those big feelings so well! Feeling angry is normal, and you found healthy ways to calm down. That's a superpower! 💪"
+  },
+  {
+    "id": "too-loud",
+    "ageRange": "4-6",
+    "animal": "Mouse",
+    "animalEmoji": "🐭",
+    "title": "Too Loud!",
+    "feeling": "overwhelmed",
+    "story": "Mouse was at a birthday party with lots of kids running around, music playing, and everyone talking loudly. Mouse felt overwhelmed by all the noise and wanted to hide. What should Mouse do?",
+    "imagePrompt": "A small mouse looking overwhelmed at a noisy birthday party",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Find a quiet corner to take a break, ask a grown-up for help, or step outside for fresh air",
+        "type": "good",
+        "explanation": "Perfect! It's okay to need quiet time. Finding a calm space or asking for help shows you know how to take care of yourself!"
+      },
+      {
+        "id": "b",
+        "text": "Start crying and run away",
+        "type": "bad",
+        "explanation": "Running away might make you feel more scared. It's better to find a quiet spot or ask a grown-up for help!"
+      },
+      {
+        "id": "c",
+        "text": "Try to ignore it and stay in the loud room",
+        "type": "okay",
+        "explanation": "It's okay to try, but if the noise feels too much, it's perfectly fine to take a break! Taking care of ourselves is important!"
+      },
+      {
+        "id": "d",
+        "text": "Yell at everyone to be quiet",
+        "type": "unrelated",
+        "explanation": "Yelling might make things louder! It's better to find a quiet space or ask a grown-up for help!"
+      }
+    ],
+    "endingMessage": "You listened to your body! When things feel too loud or overwhelming, taking a break is a smart choice. You're learning to take care of yourself! 🎈"
+  },
+  {
+    "id": "not-winning",
+    "ageRange": "4-6",
+    "animal": "Frog",
+    "animalEmoji": "🐸",
+    "title": "Not Winning",
+    "feeling": "upset",
+    "story": "Frog was playing a game with friends and kept losing. Every time they didn't win, Frog felt upset and wanted to quit playing. What should Frog do?",
+    "imagePrompt": "A frog looking upset after losing a game, with friends nearby",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Remember that games are for fun, congratulate the winner, and keep playing",
+        "type": "good",
+        "explanation": "Wonderful attitude! Games are about having fun together, not just winning. Being a good sport makes everyone happy!"
+      },
+      {
+        "id": "b",
+        "text": "Quit the game and go home",
+        "type": "bad",
+        "explanation": "Quitting might make you miss out on fun! Remember, games are about playing together, not just winning!"
+      },
+      {
+        "id": "c",
+        "text": "Keep playing but feel grumpy",
+        "type": "okay",
+        "explanation": "It's okay to feel a little upset, but trying to have fun even when we don't win helps us enjoy the game more!"
+      },
+      {
+        "id": "d",
+        "text": "Change the rules so they can win",
+        "type": "unrelated",
+        "explanation": "Changing rules isn't fair to others. It's better to remember that playing together is what makes games fun!"
+      }
+    ],
+    "endingMessage": "You're learning to be a great sport! Winning is fun, but playing together and having fun is even more important. You're a wonderful friend! 🎮"
+  },
+  {
+    "id": "group-project-stress",
+    "ageRange": "7-9",
+    "animal": "Deer",
+    "animalEmoji": "🦌",
+    "title": "Group Work Worries",
+    "feeling": "stressed",
+    "story": "Deer was put in a group for a school project, but the other group members weren't doing their part. Deer felt stressed because they were doing all the work and worried about getting a bad grade. What should Deer do?",
+    "imagePrompt": "A deer looking stressed, surrounded by group project materials while other animals aren't helping",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to the teacher about the situation, try to divide tasks clearly with group members, and ask for help if needed",
+        "type": "good",
+        "explanation": "Excellent problem-solving! Talking to the teacher and trying to work together fairly is the right approach. You don't have to handle it alone!"
+      },
+      {
+        "id": "b",
+        "text": "Do all the work alone without saying anything",
+        "type": "bad",
+        "explanation": "Doing everything alone isn't fair to you and doesn't help your group learn to work together. It's okay to ask for help!"
+      },
+      {
+        "id": "c",
+        "text": "Get angry and refuse to work with the group",
+        "type": "okay",
+        "explanation": "It's normal to feel frustrated, but getting angry usually makes things harder. Talking about the problem usually works better!"
+      },
+      {
+        "id": "d",
+        "text": "Blame the group members to the teacher",
+        "type": "unrelated",
+        "explanation": "It's better to focus on solving the problem together rather than blaming. Talking to the teacher about finding solutions helps everyone!"
+      }
+    ],
+    "endingMessage": "You handled that challenge well! Group work can be tricky, but learning to communicate and ask for help is an important skill. You're growing! 📋"
+  },
+  {
+    "id": "being-teased",
+    "ageRange": "7-9",
+    "animal": "Hedgehog",
+    "animalEmoji": "🦔",
+    "title": "Words That Hurt",
+    "feeling": "hurt",
+    "story": "Hedgehog's classmates were making fun of their new haircut. They kept laughing and saying mean things. Hedgehog felt hurt and embarrassed. What should Hedgehog do?",
+    "imagePrompt": "A hedgehog looking sad while other animals laugh nearby",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Tell a teacher or trusted adult, remember that mean words say more about the speaker than you, and spend time with kind friends",
+        "type": "good",
+        "explanation": "Perfect response! Telling an adult and remembering that you're wonderful just as you are is the right way to handle this. Mean words don't define you!"
+      },
+      {
+        "id": "b",
+        "text": "Say mean things back",
+        "type": "bad",
+        "explanation": "Saying mean things back usually makes things worse. It's better to tell an adult and remember that you're awesome just as you are!"
+      },
+      {
+        "id": "c",
+        "text": "Pretend it doesn't bother them",
+        "type": "okay",
+        "explanation": "It's okay to try to ignore it, but if mean words hurt, it's important to tell someone. You don't have to handle it alone!"
+      },
+      {
+        "id": "d",
+        "text": "Change their appearance to fit in",
+        "type": "unrelated",
+        "explanation": "You shouldn't have to change who you are! Being yourself is what makes you special. It's better to tell an adult about the teasing!"
+      }
+    ],
+    "endingMessage": "You're strong and wonderful just as you are! Mean words say more about the people saying them than about you. Remember, you're amazing! 💪"
+  },
+  {
+    "id": "too-many-activities",
+    "ageRange": "7-9",
+    "animal": "Bee",
+    "animalEmoji": "🐝",
+    "title": "Busy as a Bee",
+    "feeling": "exhausted",
+    "story": "Bee was signed up for soccer, piano lessons, art class, and swimming - all in one week! Bee felt exhausted and didn't have time to just play or relax. What should Bee do?",
+    "imagePrompt": "A tired bee surrounded by sports equipment, musical instruments, and art supplies",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to parents about feeling overwhelmed, choose favorite activities, and make sure there's time for rest and play",
+        "type": "good",
+        "explanation": "Great self-awareness! It's important to have balance. Talking about how you feel and choosing what you love most helps you enjoy activities more!"
+      },
+      {
+        "id": "b",
+        "text": "Keep doing everything even though they're exhausted",
+        "type": "bad",
+        "explanation": "Being exhausted all the time isn't healthy! It's okay to slow down and choose what you really love. Rest is important too!"
+      },
+      {
+        "id": "c",
+        "text": "Feel guilty about wanting to quit something",
+        "type": "okay",
+        "explanation": "It's normal to feel a little guilty, but it's okay to choose what you love! Having time to rest and play is important for growing kids!"
+      },
+      {
+        "id": "d",
+        "text": "Quit everything without talking to anyone",
+        "type": "unrelated",
+        "explanation": "Talking about your feelings first is better than quitting everything! You might find a balance that works for everyone!"
+      }
+    ],
+    "endingMessage": "You're learning about balance! Having fun activities is great, but rest and free play time are important too. You're doing great! ⚖️"
+  },
+  {
+    "id": "making-mistakes",
+    "ageRange": "7-9",
+    "animal": "Monkey",
+    "animalEmoji": "🐵",
+    "title": "Oops, I Made a Mistake",
+    "feeling": "embarrassed",
+    "story": "Monkey accidentally broke a friend's favorite pencil during art class. The friend looked upset, and Monkey felt embarrassed and didn't know what to say. What should Monkey do?",
+    "imagePrompt": "A monkey looking embarrassed, holding a broken pencil while a friend looks sad",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Apologize sincerely, offer to replace it or help fix it, and learn to be more careful",
+        "type": "good",
+        "explanation": "Perfect! Saying sorry and trying to make it right shows you care. Everyone makes mistakes - what matters is how we handle them!"
+      },
+      {
+        "id": "b",
+        "text": "Pretend it wasn't them",
+        "type": "bad",
+        "explanation": "Pretending won't make things better and might hurt the friendship. It's better to be honest and apologize!"
+      },
+      {
+        "id": "c",
+        "text": "Feel too embarrassed to say anything",
+        "type": "okay",
+        "explanation": "It's okay to feel embarrassed, but saying sorry helps fix things. Your friend will probably understand - accidents happen!"
+      },
+      {
+        "id": "d",
+        "text": "Blame someone else",
+        "type": "unrelated",
+        "explanation": "Blaming others isn't fair and won't help. Taking responsibility and apologizing is the right thing to do!"
+      }
+    ],
+    "endingMessage": "You showed great character! Making mistakes is part of learning, and you handled it the right way. That's what good friends do! ✏️"
+  },
+  {
+    "id": "social-media-pressure",
+    "ageRange": "10-12",
+    "animal": "Flamingo",
+    "animalEmoji": "🦩",
+    "title": "Online World",
+    "feeling": "pressured",
+    "story": "Flamingo's friends were all on a social media app, but Flamingo's parents said they weren't old enough yet. Flamingo felt left out and pressured to join secretly. What should Flamingo do?",
+    "imagePrompt": "A flamingo looking at a phone while friends are using social media, feeling left out",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to parents about feelings, find other ways to connect with friends, and respect the family rules",
+        "type": "good",
+        "explanation": "Excellent decision! Talking about your feelings and finding other ways to connect shows maturity. Family rules are there to keep you safe!"
+      },
+      {
+        "id": "b",
+        "text": "Join secretly without telling parents",
+        "type": "bad",
+        "explanation": "Going behind parents' backs breaks trust and can be unsafe. It's better to talk about your feelings and find solutions together!"
+      },
+      {
+        "id": "c",
+        "text": "Feel angry and resentful toward parents",
+        "type": "okay",
+        "explanation": "It's normal to feel frustrated, but talking about it helps. Your parents want to keep you safe - maybe you can find a compromise!"
+      },
+      {
+        "id": "d",
+        "text": "Stop being friends with people who use the app",
+        "type": "unrelated",
+        "explanation": "You don't have to stop being friends! There are lots of ways to connect with friends that don't involve social media!"
+      }
+    ],
+    "endingMessage": "You showed great maturity! Respecting family rules while finding ways to connect with friends shows you're growing up responsibly. You're doing great! 📱"
+  },
+  {
+    "id": "body-changes",
+    "ageRange": "10-12",
+    "animal": "Caterpillar",
+    "animalEmoji": "🐛",
+    "title": "Changing Body",
+    "feeling": "self-conscious",
+    "story": "Caterpillar noticed their body was changing - growing taller, voice changing, and feeling different. They felt self-conscious and worried about what others thought. What should Caterpillar do?",
+    "imagePrompt": "A caterpillar looking at their reflection, feeling self-conscious about changes",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Remember that body changes are normal, talk to trusted adults about questions, and focus on being healthy and happy",
+        "type": "good",
+        "explanation": "Perfect! Body changes are a normal part of growing up. Everyone goes through it, and talking to trusted adults helps us understand what's happening!"
+      },
+      {
+        "id": "b",
+        "text": "Try to hide or change their body",
+        "type": "bad",
+        "explanation": "Our bodies are changing naturally, and that's okay! Trying to change or hide our bodies isn't healthy. Everyone goes through this!"
+      },
+      {
+        "id": "c",
+        "text": "Worry constantly about what others think",
+        "type": "okay",
+        "explanation": "It's normal to feel self-conscious, but remember - everyone your age is going through changes too! You're not alone!"
+      },
+      {
+        "id": "d",
+        "text": "Avoid looking in mirrors completely",
+        "type": "unrelated",
+        "explanation": "Avoiding our reflection won't make the changes go away. It's better to learn that these changes are normal and part of growing up!"
+      }
+    ],
+    "endingMessage": "You're growing up beautifully! Body changes are a normal part of becoming a teenager. Everyone goes through this - you're not alone! Remember, you're amazing just as you are! 🌱"
+  },
+  {
+    "id": "academic-pressure",
+    "ageRange": "10-12",
+    "animal": "Hawk",
+    "animalEmoji": "🦅",
+    "title": "High Expectations",
+    "feeling": "pressured",
+    "story": "Hawk's parents and teachers kept talking about getting good grades for middle school and high school. Hawk felt pressured to be perfect and worried about disappointing everyone. What should Hawk do?",
+    "imagePrompt": "A hawk surrounded by books and report cards, looking stressed about expectations",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to parents and teachers about feeling pressured, focus on doing their best rather than being perfect, and remember that mistakes help us learn",
+        "type": "good",
+        "explanation": "Excellent! Talking about pressure and focusing on doing your best (not being perfect) is healthy. Learning from mistakes is part of growing!"
+      },
+      {
+        "id": "b",
+        "text": "Try to be perfect at everything",
+        "type": "bad",
+        "explanation": "Trying to be perfect usually leads to stress and burnout. It's better to do your best and learn from mistakes - that's how we grow!"
+      },
+      {
+        "id": "c",
+        "text": "Feel stressed but not say anything",
+        "type": "okay",
+        "explanation": "It's okay to feel stressed, but talking about it helps! Adults want to support you, not pressure you. Let them know how you feel!"
+      },
+      {
+        "id": "d",
+        "text": "Give up on schoolwork completely",
+        "type": "unrelated",
+        "explanation": "Giving up won't help! It's better to talk about the pressure and find a balance between doing well and taking care of yourself!"
+      }
+    ],
+    "endingMessage": "You're learning important life skills! Doing your best is what matters, not being perfect. Talking about pressure helps adults support you better. You've got this! 📚"
+  },
+  {
+    "id": "conflict-resolution",
+    "ageRange": "10-12",
+    "animal": "Raccoon",
+    "animalEmoji": "🦝",
+    "title": "Disagreement with Friend",
+    "feeling": "conflicted",
+    "story": "Raccoon and their best friend had a big disagreement about something important. Both felt strongly about their side, and neither wanted to back down. Raccoon felt conflicted - they didn't want to lose the friendship. What should Raccoon do?",
+    "imagePrompt": "Two raccoons having a disagreement, both looking upset",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Take a break to cool down, listen to the friend's perspective, share their own feelings calmly, and try to find a solution together",
+        "type": "good",
+        "explanation": "Perfect approach! Taking time to cool down and then listening to each other helps resolve conflicts. Good friendships can handle disagreements!"
+      },
+      {
+        "id": "b",
+        "text": "Refuse to talk to the friend ever again",
+        "type": "bad",
+        "explanation": "Ending a friendship over one disagreement usually makes us feel worse. It's better to try to work through conflicts together!"
+      },
+      {
+        "id": "c",
+        "text": "Give in completely just to keep the friendship",
+        "type": "okay",
+        "explanation": "It's okay to compromise, but giving in completely isn't healthy. Good friendships allow both people to share their feelings!"
+      },
+      {
+        "id": "d",
+        "text": "Get other friends to take their side",
+        "type": "unrelated",
+        "explanation": "Getting others involved usually makes conflicts bigger. It's better to work things out directly with your friend!"
+      }
+    ],
+    "endingMessage": "You showed great maturity! Disagreements happen in even the best friendships. Learning to communicate and work through conflicts is an important skill. You're growing! 💬"
   }
 ]
 

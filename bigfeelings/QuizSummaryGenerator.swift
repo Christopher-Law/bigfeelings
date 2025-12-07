@@ -55,13 +55,13 @@ class QuizSummaryGenerator {
         
         switch grade {
         case "Excellent":
-            section += "Outstanding work! The child consistently demonstrates strong emotional decision-making skills."
+            section += "Outstanding work! The child consistently demonstrates strong emotional decision-making skills. Continue reinforcing these positive choices."
         case "Good":
-            section += "Good progress! The child shows understanding of healthy coping strategies with room for continued growth."
+            section += "Good progress! The child shows understanding of healthy coping strategies. Continue practicing these skills together to build confidence."
         case "Fair":
-            section += "The child is learning to navigate emotional situations. With practice, they'll continue to improve."
+            section += "The child is learning to navigate emotional situations. Consistent practice and gentle guidance will help them continue to improve."
         default:
-            section += "The child is beginning their journey in emotional learning. Continued practice and support will help build these important skills."
+            section += "The child is beginning their journey in emotional learning. Patient, consistent practice and supportive guidance are essential to help build these important skills."
         }
         
         return section
@@ -109,25 +109,25 @@ class QuizSummaryGenerator {
             let badStories = answers.filter { $0.selectedChoiceType == .bad }
             let badFeelings = Set(badStories.map { $0.feeling })
             if !badFeelings.isEmpty {
-                section += "• May benefit from additional support with: \(badFeelings.joined(separator: ", "))\n"
+                section += "• Opportunities to explore together: \(badFeelings.joined(separator: ", "))\n"
                 hasContent = true
             }
         }
         
         if score.unrelated > 0 {
-            section += "• Sometimes selects choices that don't directly address the situation\n"
+            section += "• Sometimes needs help focusing on what's most important in each situation\n"
             hasContent = true
         }
         
         if score.okay > score.good {
-            section += "• Often considers multiple options, which is good! Could benefit from practice identifying the most helpful choices\n"
+            section += "• Shows good thinking by considering options, and with practice can learn to identify the most helpful choices\n"
             hasContent = true
         }
         
         if score.goodPercentage < 50 {
             let challengingFeelings = Set(answers.filter { $0.selectedChoiceType != .good }.map { $0.feeling })
             if !challengingFeelings.isEmpty {
-                section += "• Would benefit from focused practice on: \(Array(challengingFeelings).prefix(3).joined(separator: ", "))\n"
+                section += "• Needs consistent practice and support with: \(Array(challengingFeelings).prefix(3).joined(separator: ", "))\n"
                 hasContent = true
             }
         }
@@ -153,7 +153,7 @@ class QuizSummaryGenerator {
                 if percentage >= 75 {
                     insights.append("• Strong performance with \"\(feeling)\" scenarios (\(goodCount)/\(totalCount) great choices)")
                 } else if percentage < 50 {
-                    insights.append("• \"\(feeling)\" scenarios may need more practice (\(goodCount)/\(totalCount) great choices)")
+                    insights.append("• \"\(feeling)\" scenarios offer great learning opportunities (\(goodCount)/\(totalCount) great choices)")
                 }
             }
         }
@@ -170,13 +170,13 @@ class QuizSummaryGenerator {
         
         switch percentage {
         case 80...100:
-            return "✨ **Summary**: This child demonstrates excellent emotional intelligence and decision-making. Continue to provide opportunities for them to practice these skills in real-life situations."
+            return "✨ **Summary**: This child demonstrates excellent emotional intelligence and decision-making. Continue providing consistent opportunities to practice these skills in real-life situations to maintain this strong foundation."
         case 60..<80:
-            return "✨ **Summary**: This child shows good understanding of emotional regulation. With continued practice and support, they will further develop these important life skills."
+            return "✨ **Summary**: This child shows good understanding of emotional regulation. With continued, consistent practice and supportive guidance, they will further develop these important life skills."
         case 40..<60:
-            return "✨ **Summary**: This child is learning to navigate emotions and make healthy choices. Regular practice with these scenarios and real-world application will support their growth."
+            return "✨ **Summary**: This child is learning to navigate emotions and make healthy choices. Regular, structured practice with these scenarios and real-world application is needed to support their continued growth."
         default:
-            return "✨ **Summary**: This child is beginning to learn about emotions and healthy coping strategies. Patient guidance, repeated practice, and celebrating small wins will help build their confidence and skills."
+            return "✨ **Summary**: This child is beginning to learn about emotions and healthy coping strategies. Patient but consistent guidance, repeated practice, and celebrating small wins are essential to help build their confidence and skills."
         }
     }
 }
