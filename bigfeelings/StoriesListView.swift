@@ -108,7 +108,11 @@ struct StoriesListView: View {
                             // Stories list (single column)
                             VStack(spacing: 16) {
                                 ForEach(stories) { story in
-                                    StoryCard(story: story, isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id))
+                                    StoryCard(
+                                        story: story,
+                                        isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id),
+                                        isFavorited: activeChild != nil ? UserDefaultsManager.shared.isStoryFavorited(storyId: story.id, childId: activeChild!.id) : false
+                                    )
                                 }
                             }
                             .padding(.horizontal, 20)
@@ -231,22 +235,36 @@ struct StoriesListView: View {
         if let child = activeChild, let ageRange = child.ageRange {
             selectedAge = ageRange
             UserDefaultsManager.shared.saveSelectedAge(ageRange)
-            stories = StoryLoader.shared.getStories(for: ageRange)
+            let loadedStories = StoryLoader.shared.getStories(for: ageRange)
+            stories = sortStoriesWithFavoritesFirst(loadedStories, childId: child.id)
         } else {
             // Try to get from UserDefaults as fallback (for backwards compatibility)
             selectedAge = UserDefaultsManager.shared.getSelectedAge()
             if let ageRange = selectedAge {
-                stories = StoryLoader.shared.getStories(for: ageRange)
+                let loadedStories = StoryLoader.shared.getStories(for: ageRange)
+                // If no child selected, don't sort by favorites
+                stories = loadedStories
             } else {
                 stories = []
             }
         }
+    }
+    
+    private func sortStoriesWithFavoritesFirst(_ stories: [Story], childId: String) -> [Story] {
+        let favoriteIds = Set(UserDefaultsManager.shared.getFavoriteStories(forChildId: childId))
+        
+        let favorites = stories.filter { favoriteIds.contains($0.id) }
+        let nonFavorites = stories.filter { !favoriteIds.contains($0.id) }
+        
+        // Maintain original order within each group
+        return favorites + nonFavorites
     }
 }
 
 struct StoryCard: View {
     let story: Story
     let isCompleted: Bool
+    let isFavorited: Bool
     @State private var isPressed = false
     
     var body: some View {
@@ -278,18 +296,32 @@ struct StoryCard: View {
                         .font(.system(size: 15, design: .rounded))
                         .foregroundColor(.secondary)
                     
-                    // Completed badge
-                    if isCompleted {
-                        HStack(spacing: 4) {
-                            Text("🐾")
-                                .font(.system(size: 16))
-                                .accessibilityLabel("Completed")
-                            Text("Completed")
-                                .font(.system(size: 13, weight: .medium, design: .rounded))
-                                .foregroundColor(.secondary)
+                    // Badges
+                    HStack(spacing: 8) {
+                        if isFavorited {
+                            HStack(spacing: 4) {
+                                Image(systemName: "heart.fill")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.red)
+                                    .accessibilityLabel("Favorite")
+                                Text("Favorite")
+                                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                        .padding(.top, 2)
+                        
+                        if isCompleted {
+                            HStack(spacing: 4) {
+                                Text("🐾")
+                                    .font(.system(size: 16))
+                                    .accessibilityLabel("Completed")
+                                Text("Completed")
+                                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
                     }
+                    .padding(.top, 2)
                 }
                 
                 Spacer()
@@ -305,7 +337,7 @@ struct StoryCard: View {
         .buttonStyle(.plain)
         .scaleEffect(isPressed ? 0.98 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
-        .accessibilityLabel("\(story.title) with \(story.animal), feeling \(story.feeling)\(isCompleted ? ", completed" : "")")
+        .accessibilityLabel("\(story.title) with \(story.animal), feeling \(story.feeling)\(isFavorited ? ", favorited" : "")\(isCompleted ? ", completed" : "")")
         .accessibilityHint("Tap to read this story")
     }
 }

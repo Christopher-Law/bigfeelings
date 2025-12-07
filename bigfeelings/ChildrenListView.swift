@@ -12,6 +12,7 @@ struct ChildrenListView: View {
     @State private var showAddChild = false
     @State private var childToEdit: Child?
     @State private var navigateToStories = false
+    @State private var showAchievements: Child?
     
     var body: some View {
         NavigationStack {
@@ -74,6 +75,8 @@ struct ChildrenListView: View {
                                     editChild(child)
                                 } onDelete: {
                                     deleteChild(child)
+                                } onAchievements: {
+                                    showAchievements = child
                                 }
                             }
                         }
@@ -111,6 +114,11 @@ struct ChildrenListView: View {
             }
             .navigationDestination(isPresented: $navigateToStories) {
                 StoriesListView()
+            }
+            .sheet(item: $showAchievements) { child in
+                NavigationStack {
+                    AchievementsListView(child: child)
+                }
             }
         }
     }
@@ -162,27 +170,53 @@ struct ChildCard: View {
     let onTap: () -> Void
     let onEdit: () -> Void
     let onDelete: () -> Void
+    let onAchievements: () -> Void
     
     @State private var isPressed = false
     @State private var showDeleteConfirmation = false
+    @State private var showAvatarMenu = false
     
     var body: some View {
         HStack(spacing: 16) {
-            // Avatar/Icon
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.vibrantBlue.opacity(0.3), Color.vibrantGreen.opacity(0.3)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 60, height: 60)
+            // Avatar/Icon with menu
+            Menu {
+                Button(action: {
+                    HapticFeedbackManager.shared.selection()
+                    onAchievements()
+                }) {
+                    Label("Achievements", systemImage: "trophy.fill")
+                }
                 
-                Text(child.name.initials())
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
+                Button(action: {
+                    HapticFeedbackManager.shared.selection()
+                    onEdit()
+                }) {
+                    Label("Edit", systemImage: "pencil")
+                }
+                
+                Divider()
+                
+                Button(role: .destructive, action: {
+                    showDeleteConfirmation = true
+                }) {
+                    Label("Delete", systemImage: "trash")
+                }
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.vibrantBlue.opacity(0.3), Color.vibrantGreen.opacity(0.3)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 60, height: 60)
+                    
+                    Text(child.name.initials())
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                }
             }
             
             // Content
@@ -218,9 +252,12 @@ struct ChildCard: View {
             
             Spacer()
             
-            // Actions
+            // Actions menu (ellipsis)
             Menu {
-                Button(action: onEdit) {
+                Button(action: {
+                    HapticFeedbackManager.shared.selection()
+                    onEdit()
+                }) {
                     Label("Edit", systemImage: "pencil")
                 }
                 
@@ -241,6 +278,7 @@ struct ChildCard: View {
                 .fill(Color.white)
                 .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
+        .contentShape(Rectangle())
         .onTapGesture {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                 isPressed = true

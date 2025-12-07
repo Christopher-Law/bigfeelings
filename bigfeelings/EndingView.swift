@@ -11,6 +11,7 @@ struct EndingView: View {
     let story: Story
     @Environment(\.dismiss) private var dismiss
     @State private var navigateToStories = false
+    @State private var unlockedAchievement: Achievement?
     
     var body: some View {
         NavigationStack {
@@ -100,9 +101,23 @@ struct EndingView: View {
                 }
             }
             .onAppear {
-                // Mark story as completed
-                UserDefaultsManager.shared.markStoryCompleted(story.id)
+                // Get active child
+                guard let child = UserDefaultsManager.shared.getSelectedChild() else { return }
+                
+                // Mark story as completed (per child)
+                UserDefaultsManager.shared.markStoryCompleted(story.id, forChildId: child.id)
+                
+                // Record activity for streak
+                AchievementManager.shared.recordActivity(forChildId: child.id)
+                
+                // Check for newly unlocked achievements
+                let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: child.id)
+                if let firstUnlocked = newlyUnlocked.first {
+                    unlockedAchievement = firstUnlocked
+                    HapticFeedbackManager.shared.notification(type: .success)
+                }
             }
+            .achievementToast(achievement: $unlockedAchievement)
             .navigationDestination(isPresented: $navigateToStories) {
                 StoriesListView()
             }

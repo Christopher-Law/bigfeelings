@@ -13,6 +13,7 @@ struct QuizResultsView: View {
     let onDismiss: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
     @State private var navigateToStories = false
+    @State private var unlockedAchievement: Achievement?
     
     private let score: QuizScore
     
@@ -177,6 +178,20 @@ struct QuizResultsView: View {
             .navigationDestination(isPresented: $navigateToStories) {
                 StoriesListView()
             }
+            .onAppear {
+                // Record activity for streak and check achievements
+                if let childId = session.childId {
+                    AchievementManager.shared.recordActivity(forChildId: childId)
+                    
+                    // Check for newly unlocked achievements
+                    let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: childId)
+                    if let firstUnlocked = newlyUnlocked.first {
+                        unlockedAchievement = firstUnlocked
+                        HapticFeedbackManager.shared.notification(type: .success)
+                    }
+                }
+            }
+            .achievementToast(achievement: $unlockedAchievement)
         }
     }
     

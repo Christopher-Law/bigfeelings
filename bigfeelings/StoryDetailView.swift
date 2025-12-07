@@ -15,6 +15,7 @@ struct StoryDetailView: View {
     @State private var showEnding = false
     @State private var shuffledChoices: [Choice] = []
     @State private var activeChild: Child?
+    @State private var isFavorited: Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -120,8 +121,20 @@ struct StoryDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if let child = activeChild {
-                    ActiveChildAvatar(child: child)
+                HStack(spacing: 12) {
+                    if let child = activeChild {
+                        Button(action: {
+                            toggleFavorite(childId: child.id)
+                        }) {
+                            Image(systemName: isFavorited ? "heart.fill" : "heart")
+                                .font(.system(size: 20))
+                                .foregroundColor(isFavorited ? .red : .secondary)
+                        }
+                        .accessibilityLabel(isFavorited ? "Remove from favorites" : "Add to favorites")
+                        .accessibilityHint("Toggles this story as a favorite")
+                        
+                        ActiveChildAvatar(child: child)
+                    }
                 }
             }
         }
@@ -131,6 +144,10 @@ struct StoryDetailView: View {
             shuffledChoices = story.choices.shuffled()
             // Load active child
             activeChild = UserDefaultsManager.shared.getSelectedChild()
+            // Check favorite status
+            if let child = activeChild {
+                isFavorited = UserDefaultsManager.shared.isStoryFavorited(storyId: story.id, childId: child.id)
+            }
         }
         .sheet(isPresented: $showFeedback) {
             if let choice = selectedChoice {
@@ -172,6 +189,12 @@ struct StoryDetailView: View {
             UserDefaultsManager.shared.clearSelectedAge()
             dismiss()
         }
+    }
+    
+    private func toggleFavorite(childId: String) {
+        HapticFeedbackManager.shared.selection()
+        UserDefaultsManager.shared.saveFavoriteStory(storyId: story.id, childId: childId)
+        isFavorited.toggle()
     }
 }
 

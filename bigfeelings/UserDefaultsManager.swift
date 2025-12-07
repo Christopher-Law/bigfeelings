@@ -50,6 +50,27 @@ class UserDefaultsManager {
         return getCompletedStories().contains(storyId)
     }
     
+    // Per-child story completion tracking
+    private func completedStoriesKey(forChildId childId: String) -> String {
+        return "completedStories_\(childId)"
+    }
+    
+    func markStoryCompleted(_ storyId: String, forChildId childId: String) {
+        var completed = getCompletedStories(forChildId: childId)
+        if !completed.contains(storyId) {
+            completed.append(storyId)
+            UserDefaults.standard.set(completed, forKey: completedStoriesKey(forChildId: childId))
+        }
+    }
+    
+    func getCompletedStories(forChildId childId: String) -> [String] {
+        return UserDefaults.standard.stringArray(forKey: completedStoriesKey(forChildId: childId)) ?? []
+    }
+    
+    func isStoryCompleted(_ storyId: String, forChildId childId: String) -> Bool {
+        return getCompletedStories(forChildId: childId).contains(storyId)
+    }
+    
     func clearAllData() {
         UserDefaults.standard.removeObject(forKey: selectedAgeKey)
         UserDefaults.standard.removeObject(forKey: completedStoriesKey)
@@ -181,6 +202,75 @@ class UserDefaultsManager {
     
     func clearSelectedChild() {
         UserDefaults.standard.removeObject(forKey: selectedChildIdKey)
+    }
+    
+    // MARK: - Favorite Stories Management
+    
+    private func favoriteStoriesKey(forChildId childId: String) -> String {
+        return "favoriteStories_\(childId)"
+    }
+    
+    func saveFavoriteStory(storyId: String, childId: String) {
+        var favorites = getFavoriteStories(forChildId: childId)
+        if favorites.contains(storyId) {
+            // Remove from favorites (toggle off)
+            favorites.removeAll { $0 == storyId }
+        } else {
+            // Add to favorites (toggle on)
+            favorites.append(storyId)
+        }
+        UserDefaults.standard.set(favorites, forKey: favoriteStoriesKey(forChildId: childId))
+    }
+    
+    func getFavoriteStories(forChildId childId: String) -> [String] {
+        return UserDefaults.standard.stringArray(forKey: favoriteStoriesKey(forChildId: childId)) ?? []
+    }
+    
+    func isStoryFavorited(storyId: String, childId: String) -> Bool {
+        return getFavoriteStories(forChildId: childId).contains(storyId)
+    }
+    
+    // MARK: - Achievement Management
+    
+    private func achievementsKey(forChildId childId: String) -> String {
+        return "achievements_\(childId)"
+    }
+    
+    private func streakKey(forChildId childId: String) -> String {
+        return "streak_\(childId)"
+    }
+    
+    private func lastActivityKey(forChildId childId: String) -> String {
+        return "lastActivity_\(childId)"
+    }
+    
+    func saveAchievements(forChildId childId: String, achievements: [Achievement]) {
+        do {
+            let encoder = JSONEncoder()
+            let encoded = try encoder.encode(achievements)
+            UserDefaults.standard.set(encoded, forKey: achievementsKey(forChildId: childId))
+        } catch {
+            print("Error saving achievements: \(error.localizedDescription)")
+        }
+    }
+    
+    func getAchievements(forChildId childId: String) -> [Achievement] {
+        guard let data = UserDefaults.standard.data(forKey: achievementsKey(forChildId: childId)),
+              let achievements = try? JSONDecoder().decode([Achievement].self, from: data) else {
+            return []
+        }
+        return achievements
+    }
+    
+    func saveStreak(forChildId childId: String, streak: Int, lastDate: Date) {
+        UserDefaults.standard.set(streak, forKey: streakKey(forChildId: childId))
+        UserDefaults.standard.set(lastDate, forKey: lastActivityKey(forChildId: childId))
+    }
+    
+    func getStreakData(forChildId childId: String) -> (streak: Int, lastDate: Date?) {
+        let streak = UserDefaults.standard.integer(forKey: streakKey(forChildId: childId))
+        let lastDate = UserDefaults.standard.object(forKey: lastActivityKey(forChildId: childId)) as? Date
+        return (streak, lastDate)
     }
 }
 
