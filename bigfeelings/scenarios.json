@@ -1,0 +1,669 @@
+[
+  {
+    "id": "sharing-toys",
+    "ageRange": "4-6",
+    "animal": "Bunny",
+    "animalEmoji": "🐰",
+    "title": "Sharing is Caring",
+    "feeling": "sad",
+    "story": "Bunny was playing with their favorite red ball in the park. Along came Fox, who wanted to play with the ball too. Bunny felt sad because they didn't want to share their special ball. What should Bunny do?",
+    "imagePrompt": "A cute bunny holding a red ball, with a friendly fox nearby in a sunny park",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Share the ball and take turns playing",
+        "type": "good",
+        "explanation": "Great choice! Sharing helps us make friends and have more fun together. When we share, everyone feels happy!"
+      },
+      {
+        "id": "b",
+        "text": "Run away with the ball",
+        "type": "bad",
+        "explanation": "Running away might make Fox feel sad. Let's think about how we can both have fun together!"
+      },
+      {
+        "id": "c",
+        "text": "Say 'maybe later' and keep playing alone",
+        "type": "okay",
+        "explanation": "It's okay to want to play alone sometimes, but sharing can make playtime even more fun! Maybe you could play together for a little while?"
+      },
+      {
+        "id": "d",
+        "text": "Ask Fox to bring their own ball",
+        "type": "unrelated",
+        "explanation": "That's a creative idea! But right now, Fox wants to play with you. Sharing your ball could be a great way to make a new friend!"
+      }
+    ],
+    "endingMessage": "You did a wonderful job thinking about sharing! When we share our toys, we make friends and create happy memories together. Remember, sharing makes playtime more fun for everyone! 🌟"
+  },
+  {
+    "id": "nighttime-fears",
+    "ageRange": "4-6",
+    "animal": "Bear",
+    "animalEmoji": "🐻",
+    "title": "Dark Night, Bright Heart",
+    "feeling": "scared",
+    "story": "It was bedtime and Bear's room was very dark. Bear felt scared because they couldn't see anything. The shadows on the wall looked like scary monsters. What should Bear do?",
+    "imagePrompt": "A small bear in a cozy bedroom at night, with soft shadows and a nightlight nearby",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Ask a grown-up for a nightlight or to leave the door open",
+        "type": "good",
+        "explanation": "Excellent idea! Asking for help when we're scared is very brave. A nightlight or open door can make the dark feel safer!"
+      },
+      {
+        "id": "b",
+        "text": "Stay awake all night",
+        "type": "bad",
+        "explanation": "Staying awake all night would make Bear very tired. It's better to find a way to feel safe so we can rest!"
+      },
+      {
+        "id": "c",
+        "text": "Hide under the covers",
+        "type": "okay",
+        "explanation": "Hiding can feel safe for a moment, but talking to a grown-up about our fears helps us feel better for the whole night!"
+      },
+      {
+        "id": "d",
+        "text": "Pretend to be asleep",
+        "type": "unrelated",
+        "explanation": "Pretending won't make the scary feelings go away. It's better to tell someone how we feel so they can help us!"
+      }
+    ],
+    "endingMessage": "You're so brave! It's okay to feel scared sometimes. Talking to grown-ups about our fears helps us find ways to feel safe and peaceful. Sweet dreams! 🌙"
+  },
+  {
+    "id": "lost-toy",
+    "ageRange": "4-6",
+    "animal": "Puppy",
+    "animalEmoji": "🐶",
+    "title": "Where Did It Go?",
+    "feeling": "worried",
+    "story": "Puppy couldn't find their favorite stuffed animal, Mr. Snuggles. They looked in their room, the living room, and even the backyard, but Mr. Snuggles was nowhere to be found. Puppy felt worried and sad. What should Puppy do?",
+    "imagePrompt": "A worried puppy looking around a messy room, searching for a lost stuffed animal",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Ask a grown-up to help search and check the last place they remember having it",
+        "type": "good",
+        "explanation": "Great thinking! Asking for help and retracing our steps is the best way to find lost things. Grown-ups can help us look in places we might forget!"
+      },
+      {
+        "id": "b",
+        "text": "Cry and give up looking",
+        "type": "bad",
+        "explanation": "It's okay to feel sad, but giving up means we might never find Mr. Snuggles! Let's try asking for help instead!"
+      },
+      {
+        "id": "c",
+        "text": "Keep looking alone in the same places",
+        "type": "okay",
+        "explanation": "It's good to keep trying! But sometimes asking for help or thinking about new places to look can help us find things faster!"
+      },
+      {
+        "id": "d",
+        "text": "Buy a new toy instead",
+        "type": "unrelated",
+        "explanation": "A new toy might be fun, but Mr. Snuggles is special! Let's try to find the original one first - it might be in a surprising place!"
+      }
+    ],
+    "endingMessage": "You showed great problem-solving skills! When we lose something important, asking for help and thinking carefully about where we last saw it can help us find it. Don't give up! 🔍"
+  },
+  {
+    "id": "bedtime-routine",
+    "ageRange": "4-6",
+    "animal": "Kitten",
+    "animalEmoji": "🐱",
+    "title": "Time for Bed",
+    "feeling": "tired",
+    "story": "Kitten had been playing all day and now it was bedtime. Kitten felt very tired but didn't want to stop playing. They wanted to stay up and have more fun. What should Kitten do?",
+    "imagePrompt": "A sleepy kitten yawning, with toys scattered around and a cozy bed in the background",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Follow the bedtime routine: brush teeth, put on pajamas, read a story, then sleep",
+        "type": "good",
+        "explanation": "Perfect! Following a bedtime routine helps our bodies and minds get ready for sleep. We'll have more energy for fun tomorrow!"
+      },
+      {
+        "id": "b",
+        "text": "Keep playing until they fall asleep on the floor",
+        "type": "bad",
+        "explanation": "Sleeping on the floor isn't as comfortable as a bed! A good bedtime routine helps us sleep better and feel rested!"
+      },
+      {
+        "id": "c",
+        "text": "Ask to stay up just 10 more minutes",
+        "type": "okay",
+        "explanation": "It's okay to ask, but our bodies need rest to grow and stay healthy. A good night's sleep helps us have more fun tomorrow!"
+      },
+      {
+        "id": "d",
+        "text": "Hide so no one can find them",
+        "type": "unrelated",
+        "explanation": "Hiding won't help us feel less tired! It's better to talk about our feelings and follow our bedtime routine together!"
+      }
+    ],
+    "endingMessage": "You made a smart choice! Sleep is important for growing bodies and happy days. When we get good rest, we wake up ready for new adventures! Good night! 🌙"
+  },
+  {
+    "id": "new-school",
+    "ageRange": "4-6",
+    "animal": "Duckling",
+    "animalEmoji": "🦆",
+    "title": "First Day Adventure",
+    "feeling": "nervous",
+    "story": "Duckling was starting at a new school tomorrow. They had never been to school before and didn't know anyone. Duckling felt nervous about meeting new friends and learning new things. What should Duckling do?",
+    "imagePrompt": "A small duckling looking at a school building, feeling nervous but curious",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to a grown-up about feelings, pack a favorite toy, and remember that everyone feels nervous on the first day",
+        "type": "good",
+        "explanation": "Wonderful! Talking about our feelings and bringing something familiar can help us feel braver. Remember, everyone feels nervous on the first day - you're not alone!"
+      },
+      {
+        "id": "b",
+        "text": "Pretend to be sick so they don't have to go",
+        "type": "bad",
+        "explanation": "Pretending to be sick won't make the nervous feelings go away. It's better to talk about how we feel and find ways to feel braver!"
+      },
+      {
+        "id": "c",
+        "text": "Stay quiet and hope no one notices them",
+        "type": "okay",
+        "explanation": "It's okay to be quiet, but school is a place to make friends and learn! Maybe you could try saying hello to one person - they might be nervous too!"
+      },
+      {
+        "id": "d",
+        "text": "Bring lots of toys to share",
+        "type": "unrelated",
+        "explanation": "Sharing is nice, but the most important thing is to be yourself and be kind. Your new friends will like you for who you are!"
+      }
+    ],
+    "endingMessage": "You're so brave! Starting something new can feel scary, but it's also exciting! Remember, everyone at school is learning and making friends too. You've got this! 🎒"
+  },
+  {
+    "id": "playground-friends",
+    "ageRange": "4-6",
+    "animal": "Squirrel",
+    "animalEmoji": "🐿️",
+    "title": "Playground Pals",
+    "feeling": "lonely",
+    "story": "Squirrel was at the playground and saw other animals playing together. Squirrel wanted to join them but felt shy and didn't know how to ask. Squirrel felt lonely watching everyone else have fun. What should Squirrel do?",
+    "imagePrompt": "A squirrel watching other animals play together on a playground, looking shy and hopeful",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Walk over, smile, and say 'Can I play too?'",
+        "type": "good",
+        "explanation": "Excellent! Being friendly and asking to join is the best way to make new friends. Most kids love when others want to play with them!"
+      },
+      {
+        "id": "b",
+        "text": "Go home because no one wants to play with them",
+        "type": "bad",
+        "explanation": "Don't give up! The other animals probably don't know you want to play. Asking them is the first step to making friends!"
+      },
+      {
+        "id": "c",
+        "text": "Wait and hope someone invites them",
+        "type": "okay",
+        "explanation": "Waiting is okay, but sometimes we need to be brave and ask! Most kids are happy to include new friends in their games!"
+      },
+      {
+        "id": "d",
+        "text": "Play alone and ignore everyone",
+        "type": "unrelated",
+        "explanation": "Playing alone can be fun, but if you want to play with others, it's better to ask! You might be surprised how welcoming they are!"
+      }
+    ],
+    "endingMessage": "You showed great courage! Making friends can feel scary, but being friendly and asking to join in is how friendships begin. You're a wonderful friend! 🎈"
+  },
+  {
+    "id": "test-anxiety",
+    "ageRange": "7-9",
+    "animal": "Owl",
+    "animalEmoji": "🦉",
+    "title": "Test Day Jitters",
+    "feeling": "anxious",
+    "story": "Owl had a big math test tomorrow. They studied hard but still felt worried about forgetting everything. Owl's tummy felt funny and they couldn't sleep. What should Owl do?",
+    "imagePrompt": "An owl with books and papers, looking worried about an upcoming test",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Take deep breaths, review notes one more time, get good sleep, and remember they prepared well",
+        "type": "good",
+        "explanation": "Perfect! Deep breathing helps calm our bodies, and getting rest helps our brains work better. You've prepared - trust yourself!"
+      },
+      {
+        "id": "b",
+        "text": "Stay up all night studying more",
+        "type": "bad",
+        "explanation": "Staying up all night makes us too tired to think clearly! Sleep is important for remembering what we learned!"
+      },
+      {
+        "id": "c",
+        "text": "Worry about it all night",
+        "type": "okay",
+        "explanation": "It's normal to feel worried, but worrying won't help us do better. Let's try some calming strategies instead!"
+      },
+      {
+        "id": "d",
+        "text": "Pretend to be sick to skip the test",
+        "type": "unrelated",
+        "explanation": "Avoiding the test won't make the worry go away - it will just come back later. It's better to face our fears with good preparation!"
+      }
+    ],
+    "endingMessage": "You handled that so well! Feeling nervous about tests is normal, and you found healthy ways to cope. Remember, doing your best is what matters most! 📚"
+  },
+  {
+    "id": "friend-exclusion",
+    "ageRange": "7-9",
+    "animal": "Rabbit",
+    "animalEmoji": "🐰",
+    "title": "Left Out",
+    "feeling": "hurt",
+    "story": "Rabbit's best friend Fox was having a birthday party and invited everyone in class except Rabbit. Rabbit felt hurt and confused about why they weren't invited. What should Rabbit do?",
+    "imagePrompt": "A rabbit looking sad, seeing other animals excited about a party invitation",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to Fox privately about feelings, ask if there's a reason, and suggest doing something fun together another time",
+        "type": "good",
+        "explanation": "Great communication! Talking about our feelings in a calm way helps us understand what happened and work through it together!"
+      },
+      {
+        "id": "b",
+        "text": "Get angry and stop being friends with Fox",
+        "type": "bad",
+        "explanation": "Getting angry right away might make things worse. It's better to talk about our feelings first and understand what happened!"
+      },
+      {
+        "id": "c",
+        "text": "Pretend it doesn't matter and ignore Fox",
+        "type": "okay",
+        "explanation": "It's okay to protect our feelings, but talking about what happened can help us understand and maybe fix the friendship!"
+      },
+      {
+        "id": "d",
+        "text": "Have their own party and not invite Fox",
+        "type": "unrelated",
+        "explanation": "Trying to get back at someone usually makes things worse. It's better to talk about our feelings and try to understand what happened!"
+      }
+    ],
+    "endingMessage": "You showed emotional maturity! Talking about our feelings when we're hurt is brave and helps us work through problems. Friendships can have bumps, but communication helps! 💙"
+  },
+  {
+    "id": "homework-overwhelm",
+    "ageRange": "7-9",
+    "animal": "Beaver",
+    "animalEmoji": "🦫",
+    "title": "Too Much to Do",
+    "feeling": "overwhelmed",
+    "story": "Beaver had lots of homework: math problems, a book report, and a science project. It all seemed like too much to finish. Beaver felt overwhelmed and didn't know where to start. What should Beaver do?",
+    "imagePrompt": "A beaver surrounded by books and papers, looking overwhelmed by too much homework",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Break it into small steps, start with the easiest task, take breaks, and ask for help if needed",
+        "type": "good",
+        "explanation": "Excellent strategy! Breaking big tasks into smaller pieces makes them feel less scary. Starting with something easy builds confidence!"
+      },
+      {
+        "id": "b",
+        "text": "Try to do everything at once",
+        "type": "bad",
+        "explanation": "Doing everything at once can make us feel more overwhelmed! It's better to take things one step at a time!"
+      },
+      {
+        "id": "c",
+        "text": "Put it off until the last minute",
+        "type": "okay",
+        "explanation": "Putting things off usually makes us feel more stressed later. Starting early, even with small steps, helps us feel better!"
+      },
+      {
+        "id": "d",
+        "text": "Just don't do any of it",
+        "type": "unrelated",
+        "explanation": "Not doing homework might feel easier now, but it will cause problems later. Let's find a way to make it manageable!"
+      }
+    ],
+    "endingMessage": "You found a great solution! When things feel too big, breaking them into smaller pieces helps us feel capable and successful. You've got this! 📝"
+  },
+  {
+    "id": "sibling-conflict",
+    "ageRange": "7-9",
+    "animal": "Chipmunk",
+    "animalEmoji": "🐹",
+    "title": "Sibling Squabble",
+    "feeling": "frustrated",
+    "story": "Chipmunk's little sibling kept interrupting while they were trying to do homework. The sibling wanted to play and wouldn't leave Chipmunk alone. Chipmunk felt frustrated and angry. What should Chipmunk do?",
+    "imagePrompt": "A chipmunk trying to work while a smaller chipmunk tries to get attention",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Calmly explain they need quiet time, suggest playing together later, and ask a grown-up for help if needed",
+        "type": "good",
+        "explanation": "Perfect! Using calm words and setting boundaries helps. Suggesting time together later shows you care about your sibling too!"
+      },
+      {
+        "id": "b",
+        "text": "Yell and push the sibling away",
+        "type": "bad",
+        "explanation": "Yelling and pushing can hurt feelings and make things worse. Let's try using calm words instead!"
+      },
+      {
+        "id": "c",
+        "text": "Ignore them and hope they go away",
+        "type": "okay",
+        "explanation": "Ignoring might work sometimes, but talking calmly about what you need usually works better and keeps everyone happy!"
+      },
+      {
+        "id": "d",
+        "text": "Lock themselves in their room",
+        "type": "unrelated",
+        "explanation": "Locking doors can be unsafe and doesn't solve the problem. It's better to talk about boundaries with a grown-up's help!"
+      }
+    ],
+    "endingMessage": "You handled that conflict so well! Setting boundaries calmly and suggesting time together later shows maturity. Siblings can be tricky, but communication helps! 👫"
+  },
+  {
+    "id": "feeling-different",
+    "ageRange": "7-9",
+    "animal": "Penguin",
+    "animalEmoji": "🐧",
+    "title": "Standing Out",
+    "feeling": "different",
+    "story": "Penguin loved reading books while all their friends loved playing sports. Sometimes Penguin felt like they didn't fit in because their interests were different. What should Penguin do?",
+    "imagePrompt": "A penguin reading a book while other animals play sports in the background",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Embrace their unique interests, find friends who share similar hobbies, and remember that being different is special",
+        "type": "good",
+        "explanation": "Wonderful! Being different makes you special! It's great to have your own interests, and you can find friends who appreciate what makes you unique!"
+      },
+      {
+        "id": "b",
+        "text": "Pretend to like sports just to fit in",
+        "type": "bad",
+        "explanation": "Pretending to be someone else won't make you happy. Being true to yourself helps you find real friends who like you for who you are!"
+      },
+      {
+        "id": "c",
+        "text": "Stop reading and only do what friends do",
+        "type": "okay",
+        "explanation": "It's okay to try new things, but you don't have to give up what you love! You can enjoy both your interests and your friends' activities!"
+      },
+      {
+        "id": "d",
+        "text": "Avoid all friends completely",
+        "type": "unrelated",
+        "explanation": "Avoiding friends won't help! You can have your own interests AND be friends with people who have different interests. That's what makes friendships interesting!"
+      }
+    ],
+    "endingMessage": "You're amazing just as you are! Having different interests makes you unique and interesting. True friends will like you for who you are! 🌟"
+  },
+  {
+    "id": "competition-loss",
+    "ageRange": "7-9",
+    "animal": "Cheetah",
+    "animalEmoji": "🐆",
+    "title": "Not First This Time",
+    "feeling": "disappointed",
+    "story": "Cheetah loved running races and usually won. Today, they came in third place. Cheetah felt disappointed and sad. They thought about giving up running altogether. What should Cheetah do?",
+    "imagePrompt": "A cheetah looking disappointed after a race, standing on a third-place podium",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Feel the disappointment, congratulate the winners, practice more, and remember that everyone has off days",
+        "type": "good",
+        "explanation": "Excellent attitude! It's okay to feel disappointed, but being a good sport and learning from the experience makes you a true champion!"
+      },
+      {
+        "id": "b",
+        "text": "Quit running forever",
+        "type": "bad",
+        "explanation": "One race doesn't define you! Everyone has days when things don't go perfectly. Giving up means missing out on future successes!"
+      },
+      {
+        "id": "c",
+        "text": "Blame the other runners for winning",
+        "type": "okay",
+        "explanation": "It's normal to feel frustrated, but blaming others won't help us improve. Let's focus on what we can learn and control!"
+      },
+      {
+        "id": "d",
+        "text": "Pretend they don't care about running",
+        "type": "unrelated",
+        "explanation": "Pretending we don't care about something we love won't make us feel better. It's okay to be disappointed and still keep trying!"
+      }
+    ],
+    "endingMessage": "You showed great sportsmanship! Feeling disappointed is normal, but learning from setbacks and being a good sport makes you a true winner. Keep going! 🏃"
+  },
+  {
+    "id": "peer-pressure",
+    "ageRange": "10-12",
+    "animal": "Wolf",
+    "animalEmoji": "🐺",
+    "title": "Following the Pack",
+    "feeling": "pressured",
+    "story": "Wolf's friends wanted to skip class and go to the park instead. Wolf knew it was wrong but didn't want to be left out or seem uncool. Wolf felt pressured to go along. What should Wolf do?",
+    "imagePrompt": "A wolf looking conflicted, with friends in the background encouraging them to skip class",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Politely decline, suggest doing something fun after school instead, and stick to their values",
+        "type": "good",
+        "explanation": "Excellent decision! Standing up for what you believe in takes courage. True friends will respect your choices, and you can still have fun together in better ways!"
+      },
+      {
+        "id": "b",
+        "text": "Go along even though it feels wrong",
+        "type": "bad",
+        "explanation": "Going against our values usually makes us feel worse, not better. It's better to be true to ourselves and find friends who respect our choices!"
+      },
+      {
+        "id": "c",
+        "text": "Go but feel guilty about it",
+        "type": "okay",
+        "explanation": "That guilty feeling is telling us something important! When something doesn't feel right, it's usually because it isn't. Trust your instincts!"
+      },
+      {
+        "id": "d",
+        "text": "Tell on the friends to get them in trouble",
+        "type": "unrelated",
+        "explanation": "Tattling to get others in trouble isn't the best approach. It's better to make your own good choice and let others make theirs!"
+      }
+    ],
+    "endingMessage": "You showed incredible strength! Standing up for your values, even when it's hard, shows true character. You can be a leader by making good choices! 💪"
+  },
+  {
+    "id": "changing-interests",
+    "ageRange": "10-12",
+    "animal": "Butterfly",
+    "animalEmoji": "🦋",
+    "title": "New Wings",
+    "feeling": "confused",
+    "story": "Butterfly used to love dance class, but lately they've been more interested in art. Their dance friends seemed disappointed, and Butterfly felt confused about changing interests. What should Butterfly do?",
+    "imagePrompt": "A butterfly looking at art supplies while dance shoes sit in the background",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to friends about the change, explore new interests while keeping old friendships, and remember it's okay to grow and change",
+        "type": "good",
+        "explanation": "Perfect! It's completely normal for interests to change as we grow. Good friends will support you exploring new things while staying friends!"
+      },
+      {
+        "id": "b",
+        "text": "Keep doing dance even though they don't enjoy it anymore",
+        "type": "bad",
+        "explanation": "Doing something you don't enjoy just to please others won't make you happy. It's okay to explore new interests - that's how we grow!"
+      },
+      {
+        "id": "c",
+        "text": "Feel guilty about changing",
+        "type": "okay",
+        "explanation": "It's normal to feel a little guilty, but changing interests is a natural part of growing up! You can still be friends with people who have different interests!"
+      },
+      {
+        "id": "d",
+        "text": "Stop being friends with dance friends",
+        "type": "unrelated",
+        "explanation": "You don't have to stop being friends just because your interests changed! Good friendships can include people with different hobbies!"
+      }
+    ],
+    "endingMessage": "You're growing and discovering who you are! Changing interests is a natural part of growing up. True friends will support you exploring new passions! 🎨"
+  },
+  {
+    "id": "friends-drifting",
+    "ageRange": "10-12",
+    "animal": "Dolphin",
+    "animalEmoji": "🐬",
+    "title": "Growing Apart",
+    "feeling": "sad",
+    "story": "Dolphin and their best friend Seal had been close for years, but lately they seemed to be growing apart. They had different interests and didn't hang out as much. Dolphin felt sad about the friendship changing. What should Dolphin do?",
+    "imagePrompt": "Two dolphins swimming in different directions, looking a bit sad",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk openly about the changes, try new activities together, and accept that friendships can evolve while still being meaningful",
+        "type": "good",
+        "explanation": "Wonderful approach! Friendships do change as we grow, and that's okay. Talking about it and trying new things together can help keep the friendship strong!"
+      },
+      {
+        "id": "b",
+        "text": "Get angry and end the friendship completely",
+        "type": "bad",
+        "explanation": "Ending a friendship because it's changing might make us feel worse. It's better to talk about what's happening and see if you can grow together!"
+      },
+      {
+        "id": "c",
+        "text": "Pretend everything is the same",
+        "type": "okay",
+        "explanation": "Pretending won't make the changes go away. It's better to acknowledge what's happening and work together to adapt the friendship!"
+      },
+      {
+        "id": "d",
+        "text": "Try to force Seal to like the same things",
+        "type": "unrelated",
+        "explanation": "Trying to change someone else won't work and might push them away. It's better to find new ways to connect that work for both of you!"
+      }
+    ],
+    "endingMessage": "You handled that with maturity! Friendships do change as we grow, and that's normal. Sometimes friendships evolve, and sometimes we find new ways to stay connected. You're learning important life skills! 💙"
+  },
+  {
+    "id": "middle-school-worries",
+    "ageRange": "10-12",
+    "animal": "Eagle",
+    "animalEmoji": "🦅",
+    "title": "New Heights",
+    "feeling": "anxious",
+    "story": "Eagle was starting middle school next year. They worried about harder classes, making new friends, getting lost in a bigger school, and having multiple teachers. Eagle felt anxious about all the changes. What should Eagle do?",
+    "imagePrompt": "An eagle looking at a large school building, feeling nervous about the transition",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Talk to current teachers, visit the school, connect with other students going there, and remember that everyone feels nervous about transitions",
+        "type": "good",
+        "explanation": "Excellent preparation! Learning about what to expect and connecting with others helps reduce anxiety. Remember, everyone starting middle school feels nervous - you're not alone!"
+      },
+      {
+        "id": "b",
+        "text": "Worry constantly and lose sleep",
+        "type": "bad",
+        "explanation": "Worrying won't help us prepare! It's better to take action - learn about the school, talk to people, and get ready in positive ways!"
+      },
+      {
+        "id": "c",
+        "text": "Pretend they're not worried at all",
+        "type": "okay",
+        "explanation": "It's okay to feel worried - that's normal! Acknowledging our feelings and preparing for the change helps us feel more confident!"
+      },
+      {
+        "id": "d",
+        "text": "Try to stay in elementary school forever",
+        "type": "unrelated",
+        "explanation": "We can't avoid growing up, but we can prepare for it! Learning about middle school and getting ready helps us feel more confident about the change!"
+      }
+    ],
+    "endingMessage": "You're preparing so well! Transitions can feel scary, but you're taking positive steps to get ready. Middle school is a new adventure, and you've got the skills to handle it! 🎓"
+  },
+  {
+    "id": "achievement-comparison",
+    "ageRange": "10-12",
+    "animal": "Lion",
+    "animalEmoji": "🦁",
+    "title": "Measuring Up",
+    "feeling": "inadequate",
+    "story": "Lion worked hard on a science project and got a B+. Their friend got an A+ on the same project. Lion felt like they weren't good enough and compared themselves to their friend. What should Lion do?",
+    "imagePrompt": "A lion looking at their B+ grade while seeing a friend's A+ grade, feeling disappointed",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Focus on their own progress, celebrate the B+ as good work, learn from what went well, and remember that everyone has different strengths",
+        "type": "good",
+        "explanation": "Perfect mindset! Comparing ourselves to others usually makes us feel worse. Focusing on our own growth and celebrating our achievements is much healthier!"
+      },
+      {
+        "id": "b",
+        "text": "Feel like a failure and give up on science",
+        "type": "bad",
+        "explanation": "A B+ is good work! One grade doesn't define you. Giving up because someone else did better won't help you grow and learn!"
+      },
+      {
+        "id": "c",
+        "text": "Try to copy exactly what the friend did next time",
+        "type": "okay",
+        "explanation": "Learning from others is good, but copying won't help you develop your own skills. Focus on doing your best work in your own way!"
+      },
+      {
+        "id": "d",
+        "text": "Stop being friends with the person who got an A+",
+        "type": "unrelated",
+        "explanation": "Being friends with people who do well can actually help us learn! It's better to focus on our own growth rather than comparing!"
+      }
+    ],
+    "endingMessage": "You're learning an important lesson! Comparing ourselves to others usually makes us feel worse. Your B+ represents your hard work - that's something to be proud of! Focus on your own journey! 📊"
+  },
+  {
+    "id": "feeling-misunderstood",
+    "ageRange": "10-12",
+    "animal": "Octopus",
+    "animalEmoji": "🐙",
+    "title": "Not Getting It",
+    "feeling": "misunderstood",
+    "story": "Octopus tried to explain to their parents why they wanted to join the robotics club, but their parents didn't seem to understand. They kept suggesting other activities instead. Octopus felt frustrated and misunderstood. What should Octopus do?",
+    "imagePrompt": "An octopus trying to explain something to adult octopuses, looking frustrated",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Write down reasons why robotics matters to them, find examples of how it helps learning, and have a calm conversation with parents",
+        "type": "good",
+        "explanation": "Excellent communication strategy! Sometimes parents need to understand why something matters to us. Preparing your thoughts and having a calm conversation helps!"
+      },
+      {
+        "id": "b",
+        "text": "Get angry and storm off",
+        "type": "bad",
+        "explanation": "Getting angry usually makes communication harder. It's better to take time to calm down and then explain your feelings clearly!"
+      },
+      {
+        "id": "c",
+        "text": "Give up and not try to explain",
+        "type": "okay",
+        "explanation": "It's okay to feel frustrated, but giving up means your parents might never understand. Try explaining in a different way!"
+      },
+      {
+        "id": "d",
+        "text": "Join robotics without telling parents",
+        "type": "unrelated",
+        "explanation": "Going behind parents' backs usually causes bigger problems. It's better to work on communication and understanding each other!"
+      }
+    ],
+    "endingMessage": "You showed great communication skills! Feeling misunderstood is frustrating, but finding ways to express yourself clearly helps others understand what matters to you. Keep trying! 🤖"
+  }
+]
+

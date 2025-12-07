@@ -7,10 +7,8 @@
 
 import UIKit
 
-@main
+// Note: @main is in BigFeelingsApp.swift for SwiftUI App lifecycle
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
