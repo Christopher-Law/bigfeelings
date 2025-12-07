@@ -183,11 +183,13 @@ struct QuizResultsView: View {
                 if let childId = session.childId {
                     AchievementManager.shared.recordActivity(forChildId: childId)
                     
-                    // Check for newly unlocked achievements
-                    let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: childId)
-                    if let firstUnlocked = newlyUnlocked.first {
-                        unlockedAchievement = firstUnlocked
-                        HapticFeedbackManager.shared.notification(type: .success)
+                    // Check for newly unlocked achievements with a small delay to ensure view is ready
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: childId)
+                        if let firstUnlocked = newlyUnlocked.first {
+                            unlockedAchievement = firstUnlocked
+                            HapticFeedbackManager.shared.notification(type: .success)
+                        }
                     }
                 }
             }

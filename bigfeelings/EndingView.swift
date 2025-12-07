@@ -110,11 +110,13 @@ struct EndingView: View {
                 // Record activity for streak
                 AchievementManager.shared.recordActivity(forChildId: child.id)
                 
-                // Check for newly unlocked achievements
-                let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: child.id)
-                if let firstUnlocked = newlyUnlocked.first {
-                    unlockedAchievement = firstUnlocked
-                    HapticFeedbackManager.shared.notification(type: .success)
+                // Check for newly unlocked achievements with a small delay to ensure view is ready
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: child.id)
+                    if let firstUnlocked = newlyUnlocked.first {
+                        unlockedAchievement = firstUnlocked
+                        HapticFeedbackManager.shared.notification(type: .success)
+                    }
                 }
             }
             .achievementToast(achievement: $unlockedAchievement)

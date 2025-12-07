@@ -17,6 +17,7 @@ struct StoryDetailView: View {
     @State private var activeChild: Child?
     @State private var isFavorited: Bool = false
     @State private var showAchievements = false
+    @State private var unlockedAchievement: Achievement?
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -179,6 +180,7 @@ struct StoryDetailView: View {
                 }
             }
         }
+        .achievementToast(achievement: $unlockedAchievement)
     }
     
     private func selectChoice(_ choice: Choice) {
@@ -205,6 +207,13 @@ struct StoryDetailView: View {
         HapticFeedbackManager.shared.selection()
         UserDefaultsManager.shared.saveFavoriteStory(storyId: story.id, childId: childId)
         isFavorited.toggle()
+        
+        // Check for newly unlocked achievements (favorite-related)
+        let newlyUnlocked = AchievementManager.shared.checkAchievements(forChildId: childId)
+        if let firstUnlocked = newlyUnlocked.first {
+            unlockedAchievement = firstUnlocked
+            HapticFeedbackManager.shared.notification(type: .success)
+        }
     }
 }
 

@@ -89,21 +89,18 @@ struct AchievementToastModifier: ViewModifier {
     @Binding var achievement: Achievement?
     
     func body(content: Content) -> some View {
-        ZStack(alignment: .top) {
-            content
-            
-            if let achievement = achievement {
-                VStack {
+        content
+            .overlay(alignment: .top) {
+                if let achievement = achievement {
                     AchievementToast(achievement: achievement) {
-                        self.achievement = nil
+                        withAnimation {
+                            self.achievement = nil
+                        }
                     }
                     .padding(.top, 60)
                     .transition(.move(edge: .top).combined(with: .opacity))
-                    
-                    Spacer()
                 }
             }
-        }
     }
 }
 
