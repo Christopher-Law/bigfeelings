@@ -91,21 +91,38 @@ class UserDefaultsManager {
     
     func saveChild(_ child: Child) {
         var children = getChildren()
-        // Remove old child with same ID if exists
+        // Remove old child with same ID if exists (for updates)
         children.removeAll { $0.id == child.id }
+        // Add the new/updated child
         children.append(child)
         
-        if let encoded = try? JSONEncoder().encode(children) {
+        // Encode and save
+        do {
+            let encoder = JSONEncoder()
+            let encoded = try encoder.encode(children)
             UserDefaults.standard.set(encoded, forKey: childrenKey)
+            // Ensure data is written immediately
+            UserDefaults.standard.synchronize()
+        } catch {
+            print("Error saving child: \(error.localizedDescription)")
         }
     }
     
     func getChildren() -> [Child] {
-        guard let data = UserDefaults.standard.data(forKey: childrenKey),
-              let children = try? JSONDecoder().decode([Child].self, from: data) else {
+        guard let data = UserDefaults.standard.data(forKey: childrenKey) else {
             return []
         }
-        return children.sorted { $0.name < $1.name }
+        
+        do {
+            let decoder = JSONDecoder()
+            let children = try decoder.decode([Child].self, from: data)
+            return children.sorted { $0.name < $1.name }
+        } catch {
+            print("Error loading children: \(error.localizedDescription)")
+            // If decoding fails, clear corrupted data
+            UserDefaults.standard.removeObject(forKey: childrenKey)
+            return []
+        }
     }
     
     func getChild(id: String) -> Child? {
@@ -116,8 +133,16 @@ class UserDefaultsManager {
         var children = getChildren()
         children.removeAll { $0.id == id }
         
-        if let encoded = try? JSONEncoder().encode(children) {
+        // Encode and save
+        do {
+            let encoder = JSONEncoder()
+            let encoded = try encoder.encode(children)
             UserDefaults.standard.set(encoded, forKey: childrenKey)
+            // Ensure data is written immediately
+            UserDefaults.standard.synchronize()
+        } catch {
+            print("Error deleting child: \(error.localizedDescription)")
+            return
         }
         
         // Clear selected child if it was deleted

@@ -171,22 +171,10 @@ struct QuizView: View {
                         dismiss()
                     }
                 }
-            }
-            .safeAreaInset(edge: .bottom) {
-                if let child = child {
-                    HStack {
-                        Spacer()
-                        ActiveChildIndicator(child: child)
-                        Spacer()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if let child = child {
+                        ActiveChildAvatar(child: child)
                     }
-                    .padding(.vertical, 8)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.white.opacity(0.95), Color.white.opacity(0.95)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
                 }
             }
             .onAppear {

@@ -164,29 +164,14 @@ struct StoriesListView: View {
                         .padding(.top, 16)
                 }
             }
-            
-            // Active child indicator at the bottom
-            if let child = activeChild {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        ActiveChildIndicator(child: child)
-                            .padding(.bottom, 20)
-                        Spacer()
-                    }
-                }
-            }
         }
         .navigationTitle("Stories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Change Child") {
-                    // Navigate back to children list
-                    // This will be handled by the navigation stack
+                if let child = activeChild {
+                    ActiveChildAvatar(child: child)
                 }
-                .font(.system(size: 16, weight: .medium, design: .rounded))
             }
         }
         .onAppear {

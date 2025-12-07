@@ -10,7 +10,7 @@ import SwiftUI
 struct ChildrenListView: View {
     @State private var children: [Child] = []
     @State private var showAddChild = false
-    @State private var selectedChild: Child?
+    @State private var childToEdit: Child?
     @State private var navigateToStories = false
     
     var body: some View {
@@ -39,7 +39,7 @@ struct ChildrenListView: View {
                             .foregroundColor(.secondary)
                         
                         Button(action: {
-                            showAddChild = true
+                            presentAddChild()
                         }) {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
@@ -71,8 +71,7 @@ struct ChildrenListView: View {
                                 ChildCard(child: child) {
                                     selectChild(child)
                                 } onEdit: {
-                                    selectedChild = child
-                                    showAddChild = true
+                                    editChild(child)
                                 } onDelete: {
                                     deleteChild(child)
                                 }
@@ -89,8 +88,7 @@ struct ChildrenListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        selectedChild = nil
-                        showAddChild = true
+                        presentAddChild()
                     }) {
                         Image(systemName: "plus")
                             .font(.system(size: 18, weight: .semibold))
@@ -102,12 +100,13 @@ struct ChildrenListView: View {
             }
             .sheet(isPresented: $showAddChild) {
                 NavigationStack {
-                    ChildFormView(child: selectedChild) { savedChild in
-                        UserDefaultsManager.shared.saveChild(savedChild)
-                        loadChildren()
-                        selectedChild = nil
-                        showAddChild = false
+                    ChildFormView(child: childToEdit) { savedChild in
+                        saveChild(savedChild)
                     }
+                }
+                .onDisappear {
+                    // Clear the child to edit when sheet is dismissed
+                    childToEdit = nil
                 }
             }
             .navigationDestination(isPresented: $navigateToStories) {
@@ -118,6 +117,22 @@ struct ChildrenListView: View {
     
     private func loadChildren() {
         children = UserDefaultsManager.shared.getChildren()
+    }
+    
+    private func presentAddChild() {
+        childToEdit = nil
+        showAddChild = true
+    }
+    
+    private func editChild(_ child: Child) {
+        childToEdit = child
+        showAddChild = true
+    }
+    
+    private func saveChild(_ child: Child) {
+        UserDefaultsManager.shared.saveChild(child)
+        loadChildren()
+        // childToEdit will be cleared in onDisappear when sheet dismisses
     }
     
     private func selectChild(_ child: Child) {
@@ -165,8 +180,8 @@ struct ChildCard: View {
                     )
                     .frame(width: 60, height: 60)
                 
-                Text(child.name.prefix(1).uppercased())
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                Text(child.name.initials())
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
             }
             

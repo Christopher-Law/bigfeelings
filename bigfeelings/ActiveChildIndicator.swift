@@ -7,6 +7,35 @@
 
 import SwiftUI
 
+extension String {
+    /// Extracts initials from a name string
+    /// - Returns: Two-letter initials based on name structure:
+    ///   - 2 words: first letter of first word + first letter of last word
+    ///   - More than 2 words: first letter of first word + first letter of second word
+    ///   - 1 word: first letter + last letter of that word
+    func initials() -> String {
+        let words = self.trimmingCharacters(in: .whitespaces).components(separatedBy: .whitespaces).filter { !$0.isEmpty }
+        
+        guard !words.isEmpty else { return "" }
+        
+        if words.count == 1 {
+            // Single word: first + last letter
+            let word = words[0]
+            if word.count > 1 {
+                return String(word.prefix(1) + word.suffix(1)).uppercased()
+            } else {
+                return word.uppercased()
+            }
+        } else if words.count == 2 {
+            // Two words: first letter of first + first letter of last
+            return String(words[0].prefix(1) + words[1].prefix(1)).uppercased()
+        } else {
+            // More than 2 words: first letter of first two words
+            return String(words[0].prefix(1) + words[1].prefix(1)).uppercased()
+        }
+    }
+}
+
 struct ActiveChildIndicator: View {
     let child: Child
     let onTap: (() -> Void)?
@@ -33,8 +62,8 @@ struct ActiveChildIndicator: View {
                         )
                         .frame(width: 32, height: 32)
                     
-                    Text(child.name.prefix(1).uppercased())
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                    Text(child.name.initials())
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(.primary)
                 }
                 
@@ -58,5 +87,29 @@ struct ActiveChildIndicator: View {
             )
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// Compact version for navigation bar
+struct ActiveChildAvatar: View {
+    let child: Child
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    LinearGradient(
+                        colors: [Color.vibrantBlue.opacity(0.4), Color.vibrantGreen.opacity(0.4)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 28, height: 28)
+            
+            Text(child.name.initials())
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+        }
+        .accessibilityLabel("Active child: \(child.name)")
     }
 }

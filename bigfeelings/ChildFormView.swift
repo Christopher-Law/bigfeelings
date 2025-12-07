@@ -96,16 +96,15 @@ struct ChildFormView: View {
             }
         }
         .onAppear {
-            // Ensure fields are populated (backup in case initializer didn't work)
+            // Always populate fields when editing a child
             if let child = child {
-                // Only populate if fields are empty (haven't been set yet)
-                if name.isEmpty && age.isEmpty && notes.isEmpty {
-                    name = child.name
-                    if let ageValue = child.age {
-                        age = String(ageValue)
-                    }
-                    notes = child.notes ?? ""
+                name = child.name
+                if let ageValue = child.age {
+                    age = String(ageValue)
+                } else {
+                    age = ""
                 }
+                notes = child.notes ?? ""
             }
         }
     }
@@ -140,5 +139,6 @@ struct ChildFormView: View {
         
         HapticFeedbackManager.shared.impact(style: .medium)
         onSave(childToSave)
+        dismiss()
     }
 }
