@@ -185,6 +185,20 @@ class UserDefaultsManager {
         if getSelectedChildId() == id {
             clearSelectedChild()
         }
+        
+        // Clean up all child-specific data
+        UserDefaults.standard.removeObject(forKey: achievementsKey(forChildId: id))
+        UserDefaults.standard.removeObject(forKey: streakKey(forChildId: id))
+        UserDefaults.standard.removeObject(forKey: lastActivityKey(forChildId: id))
+        UserDefaults.standard.removeObject(forKey: completedStoriesKey(forChildId: id))
+        UserDefaults.standard.removeObject(forKey: favoriteStoriesKey(forChildId: id))
+        
+        // Remove quiz sessions for this child
+        var allSessions = getQuizSessions()
+        allSessions.removeAll { $0.childId == id }
+        if let encoded = try? JSONEncoder().encode(allSessions) {
+            UserDefaults.standard.set(encoded, forKey: quizSessionsKey)
+        }
     }
     
     func saveSelectedChildId(_ childId: String) {

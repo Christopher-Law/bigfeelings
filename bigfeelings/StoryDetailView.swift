@@ -16,6 +16,7 @@ struct StoryDetailView: View {
     @State private var shuffledChoices: [Choice] = []
     @State private var activeChild: Child?
     @State private var isFavorited: Bool = false
+    @State private var showAchievements = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -133,7 +134,9 @@ struct StoryDetailView: View {
                         .accessibilityLabel(isFavorited ? "Remove from favorites" : "Add to favorites")
                         .accessibilityHint("Toggles this story as a favorite")
                         
-                        ActiveChildAvatar(child: child)
+                        ActiveChildAvatar(child: child) {
+                            showAchievements = true
+                        }
                     }
                 }
             }
@@ -168,6 +171,13 @@ struct StoryDetailView: View {
         }
         .sheet(isPresented: $showEnding) {
             EndingView(story: story)
+        }
+        .sheet(isPresented: $showAchievements) {
+            if let child = activeChild {
+                NavigationStack {
+                    AchievementsListView(child: child)
+                }
+            }
         }
     }
     

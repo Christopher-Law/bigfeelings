@@ -209,7 +209,7 @@ struct AchievementCard: View {
     let achievement: Achievement
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             // Icon
             ZStack {
                 Circle()
@@ -247,24 +247,34 @@ struct AchievementCard: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
             
+            // Description/Requirement
+            Text(achievement.description)
+                .font(.system(size: 11, design: .rounded))
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+            
             // Progress bar
             if !achievement.isUnlocked {
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 6)
-                        
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.vibrantBlue.opacity(0.5))
-                            .frame(width: geometry.size.width * (achievement.progressPercentage / 100), height: 6)
+                VStack(spacing: 4) {
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(height: 6)
+                            
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.vibrantBlue.opacity(0.5))
+                                .frame(width: geometry.size.width * (achievement.progressPercentage / 100), height: 6)
+                        }
                     }
+                    .frame(height: 6)
+                    
+                    Text("\(achievement.currentProgress)/\(achievement.requirement)")
+                        .font(.system(size: 10, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
                 }
-                .frame(height: 6)
-                
-                Text("\(achievement.currentProgress)/\(achievement.requirement)")
-                    .font(.system(size: 11, design: .rounded))
-                    .foregroundColor(.secondary)
             } else {
                 HStack(spacing: 4) {
                     Image(systemName: "checkmark.circle.fill")

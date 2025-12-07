@@ -13,6 +13,7 @@ struct StoriesListView: View {
     @State private var showQuiz = false
     @State private var activeChild: Child?
     @State private var showPastQuizzes = false
+    @State private var showAchievements = false
     
     var body: some View {
         ZStack {
@@ -205,7 +206,9 @@ struct StoriesListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if let child = activeChild {
-                    ActiveChildAvatar(child: child)
+                    ActiveChildAvatar(child: child) {
+                        showAchievements = true
+                    }
                 }
             }
         }
@@ -223,6 +226,13 @@ struct StoriesListView: View {
             if let child = activeChild {
                 NavigationStack {
                     PastQuizzesView(child: child)
+                }
+            }
+        }
+        .sheet(isPresented: $showAchievements) {
+            if let child = activeChild {
+                NavigationStack {
+                    AchievementsListView(child: child)
                 }
             }
         }

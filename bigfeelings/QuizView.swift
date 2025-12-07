@@ -20,6 +20,7 @@ struct QuizView: View {
     @State private var quizSession: QuizSession?
     @State private var completedSession: QuizSession?
     @State private var shuffledChoicesByStory: [String: [Choice]] = [:]
+    @State private var showAchievements = false
     
     private var currentStory: Story? {
         guard currentIndex < stories.count else { return nil }
@@ -173,7 +174,9 @@ struct QuizView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if let child = child {
-                        ActiveChildAvatar(child: child)
+                        ActiveChildAvatar(child: child) {
+                            showAchievements = true
+                        }
                     }
                 }
             }
@@ -200,6 +203,13 @@ struct QuizView: View {
                             showResults = false
                             dismiss()
                         }
+                    }
+                }
+            }
+            .sheet(isPresented: $showAchievements) {
+                if let child = child {
+                    NavigationStack {
+                        AchievementsListView(child: child)
                     }
                 }
             }

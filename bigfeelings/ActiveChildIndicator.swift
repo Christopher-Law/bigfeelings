@@ -93,9 +93,15 @@ struct ActiveChildIndicator: View {
 // Compact version for navigation bar
 struct ActiveChildAvatar: View {
     let child: Child
+    let onAchievements: (() -> Void)?
+    
+    init(child: Child, onAchievements: (() -> Void)? = nil) {
+        self.child = child
+        self.onAchievements = onAchievements
+    }
     
     var body: some View {
-        ZStack {
+        let avatarView = ZStack {
             Circle()
                 .fill(
                     LinearGradient(
@@ -110,6 +116,23 @@ struct ActiveChildAvatar: View {
                 .font(.system(size: 11, weight: .bold, design: .rounded))
                 .foregroundColor(.primary)
         }
-        .accessibilityLabel("Active child: \(child.name)")
+        
+        if let onAchievements = onAchievements {
+            Menu {
+                Button(action: {
+                    HapticFeedbackManager.shared.selection()
+                    onAchievements()
+                }) {
+                    Label("View Achievements", systemImage: "trophy.fill")
+                }
+            } label: {
+                avatarView
+            }
+            .accessibilityLabel("Active child: \(child.name)")
+            .accessibilityHint("Tap to view achievements menu")
+        } else {
+            avatarView
+                .accessibilityLabel("Active child: \(child.name)")
+        }
     }
 }
