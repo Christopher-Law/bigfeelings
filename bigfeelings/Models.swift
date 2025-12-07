@@ -104,6 +104,7 @@ struct QuizSession: Codable, Identifiable {
     let startDate: Date
     let endDate: Date?
     let answers: [QuizAnswer]
+    let childId: String?
     
     var isCompleted: Bool {
         endDate != nil
@@ -115,6 +116,15 @@ struct QuizSession: Codable, Identifiable {
     
     var score: QuizScore {
         QuizScore(from: answers)
+    }
+    
+    init(id: String, ageRange: AgeRange, startDate: Date, endDate: Date?, answers: [QuizAnswer], childId: String? = nil) {
+        self.id = id
+        self.ageRange = ageRange
+        self.startDate = startDate
+        self.endDate = endDate
+        self.answers = answers
+        self.childId = childId
     }
 }
 

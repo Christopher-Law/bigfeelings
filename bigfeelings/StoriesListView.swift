@@ -12,6 +12,7 @@ struct StoriesListView: View {
     @State private var selectedAge: AgeRange?
     @State private var showQuiz = false
     @State private var activeChild: Child?
+    @State private var showPastQuizzes = false
     
     var body: some View {
         ZStack {
@@ -41,6 +42,37 @@ struct StoriesListView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 20) {
+                            // Past Quizzes button (if child is selected)
+                            if let child = activeChild {
+                                Button(action: {
+                                    HapticFeedbackManager.shared.impact(style: .medium)
+                                    showPastQuizzes = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "chart.line.uptrend.xyaxis")
+                                            .font(.system(size: 20))
+                                        Text("Past Quizzes")
+                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    }
+                                    .foregroundColor(.primary)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 14)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(Color.white.opacity(0.9))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .stroke(Color.vibrantBlue.opacity(0.3), lineWidth: 2)
+                                            )
+                                            .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 3)
+                                    )
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.top, 10)
+                                .accessibilityLabel("View Past Quizzes")
+                                .accessibilityHint("View \(child.name)'s quiz history and progress")
+                            }
+                            
                             // Start Quiz button
                             if !stories.isEmpty {
                                 Button(action: {
@@ -69,7 +101,6 @@ struct StoriesListView: View {
                                     )
                                 }
                                 .padding(.horizontal, 20)
-                                .padding(.top, 10)
                                 .accessibilityLabel("Start Quiz")
                                 .accessibilityHint("Take a quiz with all stories for this age group")
                             }
@@ -182,6 +213,13 @@ struct StoriesListView: View {
                 // Randomly select 5 stories for the quiz
                 let quizStories = Array(stories.shuffled().prefix(5))
                 QuizView(stories: quizStories, ageRange: ageRange, child: activeChild)
+            }
+        }
+        .sheet(isPresented: $showPastQuizzes) {
+            if let child = activeChild {
+                NavigationStack {
+                    PastQuizzesView(child: child)
+                }
             }
         }
     }

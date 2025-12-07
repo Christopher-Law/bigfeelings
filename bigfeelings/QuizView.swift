@@ -213,7 +213,8 @@ struct QuizView: View {
             ageRange: ageRange,
             startDate: Date(),
             endDate: nil,
-            answers: []
+            answers: [],
+            childId: child?.id
         )
         
         // Pre-shuffle choices for all stories
@@ -252,7 +253,8 @@ struct QuizView: View {
                 ageRange: session.ageRange,
                 startDate: session.startDate,
                 endDate: nil,
-                answers: answers
+                answers: answers,
+                childId: session.childId
             )
         }
         
@@ -304,7 +306,8 @@ struct QuizView: View {
             ageRange: session.ageRange,
             startDate: session.startDate,
             endDate: Date(),
-            answers: answers
+            answers: answers,
+            childId: session.childId
         )
         
         // Save to UserDefaults

@@ -87,6 +87,16 @@ class UserDefaultsManager {
             .first
     }
     
+    func getQuizSessions(forChildId childId: String) -> [QuizSession] {
+        return getQuizSessions().filter { $0.childId == childId }
+            .sorted { $0.startDate > $1.startDate }
+    }
+    
+    func getCompletedQuizSessions(forChildId childId: String) -> [QuizSession] {
+        return getQuizSessions(forChildId: childId)
+            .filter { $0.isCompleted }
+    }
+    
     // MARK: - Child Management
     
     func saveChild(_ child: Child) {
