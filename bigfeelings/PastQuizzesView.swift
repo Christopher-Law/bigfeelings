@@ -83,6 +83,8 @@ struct PastQuizzesView: View {
     }
     
     private func loadQuizSessions() {
+        // Only load quizzes for this specific child
+        // getQuizSessions(forChildId:) ensures only quizzes belonging to this child are returned
         quizSessions = UserDefaultsManager.shared.getQuizSessions(forChildId: child.id)
     }
 }

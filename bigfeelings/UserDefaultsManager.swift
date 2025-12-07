@@ -88,8 +88,13 @@ class UserDefaultsManager {
     }
     
     func getQuizSessions(forChildId childId: String) -> [QuizSession] {
-        return getQuizSessions().filter { $0.childId == childId }
-            .sorted { $0.startDate > $1.startDate }
+        // Only return quizzes that belong to this specific child
+        // Exclude quizzes with nil childId (from before this feature was added)
+        return getQuizSessions().filter { session in
+            guard let sessionChildId = session.childId else { return false }
+            return sessionChildId == childId
+        }
+        .sorted { $0.startDate > $1.startDate }
     }
     
     func getCompletedQuizSessions(forChildId childId: String) -> [QuizSession] {
