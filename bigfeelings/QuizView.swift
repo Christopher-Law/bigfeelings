@@ -18,6 +18,7 @@ struct QuizView: View {
     @State private var showResults = false
     @State private var quizSession: QuizSession?
     @State private var completedSession: QuizSession?
+    @State private var shuffledChoicesByStory: [String: [Choice]] = [:]
     
     private var currentStory: Story? {
         guard currentIndex < stories.count else { return nil }
@@ -118,9 +119,9 @@ struct QuizView: View {
                                     .padding(.top, 10)
                                     .padding(.horizontal, 20)
                                 
-                                // Choices in single column
+                                // Choices in single column (randomized)
                                 VStack(spacing: 16) {
-                                    ForEach(story.choices) { choice in
+                                    ForEach(shuffledChoices(for: story)) { choice in
                                         QuizChoiceButton(
                                             choice: choice,
                                             isSelected: false,
@@ -201,6 +202,16 @@ struct QuizView: View {
             endDate: nil,
             answers: []
         )
+        
+        // Pre-shuffle choices for all stories
+        for story in stories {
+            shuffledChoicesByStory[story.id] = story.choices.shuffled()
+        }
+    }
+    
+    private func shuffledChoices(for story: Story) -> [Choice] {
+        // Return shuffled choices for this story, or fallback to original order
+        return shuffledChoicesByStory[story.id] ?? story.choices
     }
     
     private func selectChoice(_ choice: Choice, for story: Story) {

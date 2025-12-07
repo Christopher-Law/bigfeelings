@@ -13,6 +13,7 @@ struct StoryDetailView: View {
     @State private var selectedChoice: Choice?
     @State private var showFeedback = false
     @State private var showEnding = false
+    @State private var shuffledChoices: [Choice] = []
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -102,19 +103,12 @@ struct StoryDetailView: View {
                         .padding(.top, 10)
                         .padding(.horizontal, 20)
                     
-                    // Choices in single column
+                    // Choices in single column (randomized)
                     VStack(spacing: 16) {
-                        ChoiceButton(choice: story.choices[0]) {
-                            selectChoice(story.choices[0])
-                        }
-                        ChoiceButton(choice: story.choices[1]) {
-                            selectChoice(story.choices[1])
-                        }
-                        ChoiceButton(choice: story.choices[2]) {
-                            selectChoice(story.choices[2])
-                        }
-                        ChoiceButton(choice: story.choices[3]) {
-                            selectChoice(story.choices[3])
+                        ForEach(shuffledChoices) { choice in
+                            ChoiceButton(choice: choice) {
+                                selectChoice(choice)
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -125,6 +119,8 @@ struct StoryDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             verifyAgeMatch()
+            // Shuffle choices when view appears
+            shuffledChoices = story.choices.shuffled()
         }
         .sheet(isPresented: $showFeedback) {
             if let choice = selectedChoice {
