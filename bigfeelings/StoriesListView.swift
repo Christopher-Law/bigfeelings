@@ -52,7 +52,7 @@ struct StoriesListView: View {
                                     HStack {
                                         Image(systemName: "chart.line.uptrend.xyaxis")
                                             .font(.system(size: 20))
-                                        Text("Past Quizzes")
+                                        Text("My Growth")
                                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     }
                                     .foregroundColor(.primary)
