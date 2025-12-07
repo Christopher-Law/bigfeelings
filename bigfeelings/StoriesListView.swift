@@ -23,22 +23,41 @@ struct StoriesListView: View {
             .ignoresSafeArea()
             
             if let ageRange = selectedAge {
-                ScrollView {
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 16),
-                        GridItem(.flexible(), spacing: 16)
-                    ], spacing: 20) {
-                        ForEach(stories) { story in
-                            StoryCard(story: story, isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id))
+                if stories.isEmpty {
+                    VStack(spacing: 16) {
+                        Text("No stories available")
+                            .font(.system(size: 18, design: .rounded))
+                            .foregroundColor(.secondary)
+                        
+                        if StoryLoader.shared.hasError() {
+                            Text("There was an error loading stories. Please try again later.")
+                                .font(.system(size: 14, design: .rounded))
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 32)
                         }
                     }
-                    .padding(20)
+                } else {
+                    ScrollView {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: 16),
+                            GridItem(.flexible(), spacing: 16)
+                        ], spacing: 20) {
+                            ForEach(stories) { story in
+                                StoryCard(story: story, isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id))
+                            }
+                        }
+                        .padding(20)
+                    }
                 }
             } else {
                 VStack {
+                    ProgressView()
+                        .scaleEffect(1.5)
                     Text("Loading stories...")
                         .font(.system(size: 18, design: .rounded))
                         .foregroundColor(.secondary)
+                        .padding(.top, 16)
                 }
             }
         }
@@ -89,6 +108,7 @@ struct StoryCard: View {
                 // Animal emoji
                 Text(story.animalEmoji)
                     .font(.system(size: 48))
+                    .accessibilityHidden(true)
                 
                 // Title
                 Text(story.title)
@@ -112,6 +132,7 @@ struct StoryCard: View {
                     HStack(spacing: 4) {
                         Text("🐾")
                             .font(.system(size: 16))
+                            .accessibilityLabel("Completed")
                         Text("Completed")
                             .font(.system(size: 12, weight: .medium, design: .rounded))
                             .foregroundColor(.secondary)
@@ -130,6 +151,8 @@ struct StoryCard: View {
         .buttonStyle(PlainButtonStyle())
         .scaleEffect(isPressed ? 0.95 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
+        .accessibilityLabel("\(story.title) with \(story.animal), feeling \(story.feeling)\(isCompleted ? ", completed" : "")")
+        .accessibilityHint("Tap to read this story")
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in isPressed = true }

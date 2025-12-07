@@ -70,6 +70,7 @@ struct StoryDetailView: View {
                     
                     // Text-to-speech button
                     Button(action: {
+                        HapticFeedbackManager.shared.selection()
                         if ttsService.isSpeaking {
                             ttsService.stopSpeaking()
                         } else {
@@ -91,6 +92,8 @@ struct StoryDetailView: View {
                         )
                     }
                     .padding(.horizontal, 20)
+                    .accessibilityLabel(ttsService.isSpeaking ? "Stop reading" : "Read story aloud")
+                    .accessibilityHint(ttsService.isSpeaking ? "Stops the text-to-speech narration" : "Plays the story text using text-to-speech")
                     
                     // Question
                     Text("What should \(story.animal) do?")
@@ -147,6 +150,7 @@ struct StoryDetailView: View {
     
     private func selectChoice(_ choice: Choice) {
         ttsService.stopSpeaking()
+        HapticFeedbackManager.shared.selection()
         selectedChoice = choice
         showFeedback = true
     }
@@ -172,6 +176,7 @@ struct ChoiceButton: View {
     
     var body: some View {
         Button(action: {
+            HapticFeedbackManager.shared.selection()
             withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                 isPressed = true
             }
@@ -195,6 +200,8 @@ struct ChoiceButton: View {
         .buttonStyle(PlainButtonStyle())
         .scaleEffect(isPressed ? 0.95 : 1.0)
         .animation(.spring(response: 0.2, dampingFraction: 0.6), value: isPressed)
+        .accessibilityLabel("Choice: \(choice.text)")
+        .accessibilityHint("Select this choice to see feedback")
     }
     
     private var choiceColor: Color {

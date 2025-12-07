@@ -7,6 +7,7 @@
 
 import AVFoundation
 import Combine
+import UIKit
 
 class TextToSpeechService: NSObject, ObservableObject {
     private let synthesizer = AVSpeechSynthesizer()
@@ -15,10 +16,35 @@ class TextToSpeechService: NSObject, ObservableObject {
     override init() {
         super.init()
         synthesizer.delegate = self
+        
+        // Handle app lifecycle to stop speaking when app goes to background
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppWillResignActive),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        stopSpeaking()
+    }
+    
+    @objc private func handleAppWillResignActive() {
+        stopSpeaking()
     }
     
     func speak(_ text: String) {
         stopSpeaking()
+        
+        // Request audio session for playback
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Error setting up audio session: \(error)")
+        }
         
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
@@ -35,6 +61,13 @@ class TextToSpeechService: NSObject, ObservableObject {
             synthesizer.stopSpeaking(at: .immediate)
         }
         isSpeaking = false
+        
+        // Deactivate audio session when done
+        do {
+            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("Error deactivating audio session: \(error)")
+        }
     }
 }
 

@@ -67,6 +67,7 @@ struct AgeSelectionView: View {
     }
     
     private func selectAge(_ ageRange: AgeRange) {
+        HapticFeedbackManager.shared.impact(style: .medium)
         selectedAge = ageRange
         UserDefaultsManager.shared.saveSelectedAge(ageRange)
         

@@ -54,7 +54,10 @@ struct FeedbackModalView: View {
                 
                 // Buttons
                 VStack(spacing: 16) {
-                    Button(action: onTryAgain) {
+                    Button(action: {
+                        HapticFeedbackManager.shared.selection()
+                        onTryAgain()
+                    }) {
                         Text("Try Again")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
@@ -65,8 +68,13 @@ struct FeedbackModalView: View {
                                     .fill(Color.vibrantBlue)
                             )
                     }
+                    .accessibilityLabel("Try Again")
+                    .accessibilityHint("Go back to the story choices")
                     
-                    Button(action: onContinue) {
+                    Button(action: {
+                        HapticFeedbackManager.shared.impact(style: .light)
+                        onContinue()
+                    }) {
                         Text("Continue")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
@@ -77,6 +85,8 @@ struct FeedbackModalView: View {
                                     .fill(Color.vibrantGreen)
                             )
                     }
+                    .accessibilityLabel("Continue")
+                    .accessibilityHint("See the ending message")
                 }
                 .padding(.horizontal, 32)
                 .padding(.top, 8)
