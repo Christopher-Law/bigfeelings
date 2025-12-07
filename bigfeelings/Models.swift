@@ -87,3 +87,65 @@ struct Story: Codable, Identifiable {
     let endingMessage: String
 }
 
+// MARK: - Quiz Models
+
+struct QuizAnswer: Codable {
+    let storyId: String
+    let storyTitle: String
+    let feeling: String
+    let selectedChoiceId: ChoiceID
+    let selectedChoiceType: ChoiceType
+    let timestamp: Date
+}
+
+struct QuizSession: Codable, Identifiable {
+    let id: String
+    let ageRange: AgeRange
+    let startDate: Date
+    let endDate: Date?
+    let answers: [QuizAnswer]
+    
+    var isCompleted: Bool {
+        endDate != nil
+    }
+    
+    var totalStories: Int {
+        answers.count
+    }
+    
+    var score: QuizScore {
+        QuizScore(from: answers)
+    }
+}
+
+struct QuizScore {
+    let total: Int
+    let good: Int
+    let okay: Int
+    let bad: Int
+    let unrelated: Int
+    
+    var goodPercentage: Double {
+        guard total > 0 else { return 0 }
+        return Double(good) / Double(total) * 100
+    }
+    
+    var overallGrade: String {
+        let percentage = goodPercentage
+        switch percentage {
+        case 80...100: return "Excellent"
+        case 60..<80: return "Good"
+        case 40..<60: return "Fair"
+        default: return "Needs Practice"
+        }
+    }
+    
+    init(from answers: [QuizAnswer]) {
+        total = answers.count
+        good = answers.filter { $0.selectedChoiceType == .good }.count
+        okay = answers.filter { $0.selectedChoiceType == .okay }.count
+        bad = answers.filter { $0.selectedChoiceType == .bad }.count
+        unrelated = answers.filter { $0.selectedChoiceType == .unrelated }.count
+    }
+}
+

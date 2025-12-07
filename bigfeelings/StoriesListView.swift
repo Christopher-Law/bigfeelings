@@ -11,6 +11,7 @@ struct StoriesListView: View {
     @State private var stories: [Story] = []
     @State private var selectedAge: AgeRange?
     @State private var showAgeSelection = false
+    @State private var showQuiz = false
     
     var body: some View {
         ZStack {
@@ -39,16 +40,51 @@ struct StoriesListView: View {
                     }
                 } else {
                     ScrollView {
-                        LazyVGrid(columns: [
-                            GridItem(.flexible(), spacing: 16),
-                            GridItem(.flexible(), spacing: 16)
-                        ], spacing: 20) {
-                            ForEach(stories) { story in
-                                StoryCard(story: story, isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id))
+                        LazyVStack(spacing: 20) {
+                            // Start Quiz button
+                            if !stories.isEmpty {
+                                Button(action: {
+                                    HapticFeedbackManager.shared.impact(style: .medium)
+                                    showQuiz = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.system(size: 24))
+                                        Text("Start Quiz")
+                                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                                    }
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 18)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(
+                                                LinearGradient(
+                                                    colors: [Color.vibrantGreen, Color.vibrantBlue],
+                                                    startPoint: .leading,
+                                                    endPoint: .trailing
+                                                )
+                                            )
+                                            .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                    )
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.top, 10)
+                                .accessibilityLabel("Start Quiz")
+                                .accessibilityHint("Take a quiz with all stories for this age group")
                             }
+                            
+                            // Stories list (single column)
+                            VStack(spacing: 16) {
+                                ForEach(stories) { story in
+                                    StoryCard(story: story, isCompleted: UserDefaultsManager.shared.isStoryCompleted(story.id))
+                                }
+                            }
+                            .padding(.horizontal, 20)
                         }
-                        .padding(20)
+                        .padding(.vertical, 20)
                     }
+                    .scrollIndicators(.visible)
                 }
             } else {
                 VStack {
@@ -83,6 +119,11 @@ struct StoriesListView: View {
                 loadStories()
             }
         }
+        .fullScreenCover(isPresented: $showQuiz) {
+            if let ageRange = selectedAge {
+                QuizView(stories: stories, ageRange: ageRange)
+            }
+        }
     }
     
     private func loadStories() {
@@ -104,43 +145,50 @@ struct StoryCard: View {
     
     var body: some View {
         NavigationLink(destination: StoryDetailView(story: story)) {
-            VStack(spacing: 12) {
-                // Animal emoji
+            HStack(spacing: 16) {
+                // Animal emoji (left side)
                 Text(story.animalEmoji)
-                    .font(.system(size: 48))
+                    .font(.system(size: 64))
                     .accessibilityHidden(true)
+                    .frame(width: 80, height: 80)
                 
-                // Title
-                Text(story.title)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                
-                // Feeling
-                Text("Feeling: \(story.feeling)")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
-                
-                // Animal name
-                Text("with \(story.animal)")
-                    .font(.system(size: 14, design: .rounded))
-                    .foregroundColor(.secondary)
-                
-                // Completed badge
-                if isCompleted {
-                    HStack(spacing: 4) {
-                        Text("🐾")
-                            .font(.system(size: 16))
-                            .accessibilityLabel("Completed")
-                        Text("Completed")
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .foregroundColor(.secondary)
+                // Content (right side)
+                VStack(alignment: .leading, spacing: 8) {
+                    // Title
+                    Text(story.title)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    // Feeling
+                    Text("Feeling: \(story.feeling)")
+                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    // Animal name
+                    Text("with \(story.animal)")
+                        .font(.system(size: 15, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    // Completed badge
+                    if isCompleted {
+                        HStack(spacing: 4) {
+                            Text("🐾")
+                                .font(.system(size: 16))
+                                .accessibilityLabel("Completed")
+                            Text("Completed")
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.top, 2)
                     }
-                    .padding(.top, 4)
                 }
+                
+                Spacer()
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, minHeight: 120)
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 20)
@@ -148,16 +196,11 @@ struct StoryCard: View {
                     .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
             )
         }
-        .buttonStyle(PlainButtonStyle())
-        .scaleEffect(isPressed ? 0.95 : 1.0)
+        .buttonStyle(.plain)
+        .scaleEffect(isPressed ? 0.98 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         .accessibilityLabel("\(story.title) with \(story.animal), feeling \(story.feeling)\(isCompleted ? ", completed" : "")")
         .accessibilityHint("Tap to read this story")
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded { _ in isPressed = false }
-        )
     }
 }
 

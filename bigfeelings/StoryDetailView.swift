@@ -193,7 +193,11 @@ struct ChoiceButton: View {
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(choiceColor)
+                        .fill(Color.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(choiceColor, lineWidth: 2)
+                        )
                         .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
                 )
         }

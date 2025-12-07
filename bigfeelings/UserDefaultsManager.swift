@@ -12,6 +12,7 @@ class UserDefaultsManager {
     
     private let selectedAgeKey = "selectedAge"
     private let completedStoriesKey = "completedStories"
+    private let quizSessionsKey = "quizSessions"
     
     private init() {}
     
@@ -50,6 +51,38 @@ class UserDefaultsManager {
     func clearAllData() {
         UserDefaults.standard.removeObject(forKey: selectedAgeKey)
         UserDefaults.standard.removeObject(forKey: completedStoriesKey)
+        UserDefaults.standard.removeObject(forKey: quizSessionsKey)
+    }
+    
+    // MARK: - Quiz Session Management
+    
+    func saveQuizSession(_ session: QuizSession) {
+        var sessions = getQuizSessions()
+        // Remove old session with same ID if exists
+        sessions.removeAll { $0.id == session.id }
+        sessions.append(session)
+        
+        if let encoded = try? JSONEncoder().encode(sessions) {
+            UserDefaults.standard.set(encoded, forKey: quizSessionsKey)
+        }
+    }
+    
+    func getQuizSessions() -> [QuizSession] {
+        guard let data = UserDefaults.standard.data(forKey: quizSessionsKey),
+              let sessions = try? JSONDecoder().decode([QuizSession].self, from: data) else {
+            return []
+        }
+        return sessions
+    }
+    
+    func getQuizSessions(for ageRange: AgeRange) -> [QuizSession] {
+        return getQuizSessions().filter { $0.ageRange == ageRange }
+    }
+    
+    func getLatestQuizSession(for ageRange: AgeRange) -> QuizSession? {
+        return getQuizSessions(for: ageRange)
+            .sorted { $0.startDate > $1.startDate }
+            .first
     }
 }
 
