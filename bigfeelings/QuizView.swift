@@ -11,6 +11,7 @@ struct QuizView: View {
     let stories: [Story]
     let ageRange: AgeRange
     let child: Child?
+    let onNavigateToGrowth: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
     
     @State private var currentIndex = 0
@@ -188,12 +189,12 @@ struct QuizView: View {
                     QuizResultsView(session: session, onDismiss: {
                         showResults = false
                         dismiss()
-                    })
+                    }, onNavigateToGrowth: onNavigateToGrowth)
                 } else if let session = quizSession {
                     QuizResultsView(session: session, onDismiss: {
                         showResults = false
                         dismiss()
-                    })
+                    }, onNavigateToGrowth: onNavigateToGrowth)
                 } else {
                     // Fallback - shouldn't happen, but just in case
                     VStack {

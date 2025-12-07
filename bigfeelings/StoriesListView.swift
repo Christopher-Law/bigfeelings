@@ -13,6 +13,7 @@ struct StoriesListView: View {
     @State private var showQuiz = false
     @State private var activeChild: Child?
     @State private var showPastQuizzes = false
+    @State private var navigateToGrowth = false
     @State private var showAchievements = false
     @State private var navigateToPractice = false
     
@@ -198,7 +199,10 @@ struct StoriesListView: View {
             if let ageRange = selectedAge {
                 // Randomly select 5 stories for the quiz
                 let quizStories = Array(stories.shuffled().prefix(5))
-                QuizView(stories: quizStories, ageRange: ageRange, child: activeChild)
+                QuizView(stories: quizStories, ageRange: ageRange, child: activeChild, onNavigateToGrowth: {
+                    // Navigate to Growth page after quiz completion
+                    navigateToGrowth = true
+                })
             }
         }
         .sheet(isPresented: $showPastQuizzes) {
@@ -212,6 +216,13 @@ struct StoriesListView: View {
             if let child = activeChild {
                 NavigationStack {
                     AchievementsListView(child: child)
+                }
+            }
+        }
+        .sheet(isPresented: $navigateToGrowth) {
+            if let child = activeChild {
+                NavigationStack {
+                    GrowthView(child: child)
                 }
             }
         }

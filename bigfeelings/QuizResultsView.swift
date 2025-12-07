@@ -11,15 +11,17 @@ import UIKit
 struct QuizResultsView: View {
     let session: QuizSession
     let onDismiss: (() -> Void)?
+    let onNavigateToGrowth: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
     @State private var navigateToStories = false
     @State private var unlockedAchievement: Achievement?
     
     private let score: QuizScore
     
-    init(session: QuizSession, onDismiss: (() -> Void)? = nil) {
+    init(session: QuizSession, onDismiss: (() -> Void)? = nil, onNavigateToGrowth: (() -> Void)? = nil) {
         self.session = session
         self.onDismiss = onDismiss
+        self.onNavigateToGrowth = onNavigateToGrowth
         self.score = session.score
     }
     
@@ -171,6 +173,10 @@ struct QuizResultsView: View {
                         // Small delay to ensure results view dismisses first
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                             onDismiss?()
+                            // Navigate to Growth after dismissing quiz view
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                onNavigateToGrowth?()
+                            }
                         }
                     }
                 }
