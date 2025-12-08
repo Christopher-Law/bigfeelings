@@ -27,7 +27,7 @@ struct StoriesListView: View {
             )
             .ignoresSafeArea()
             
-            if let ageRange = selectedAge {
+            if selectedAge != nil {
                 if stories.isEmpty {
                     VStack(spacing: 16) {
                         Text("No stories available")

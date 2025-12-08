@@ -259,7 +259,7 @@ struct QuizView: View {
         answers.append(answer)
         
         // Update session with current answers
-        if var session = quizSession {
+        if let session = quizSession {
             quizSession = QuizSession(
                 id: session.id,
                 ageRange: session.ageRange,
@@ -277,7 +277,7 @@ struct QuizView: View {
     }
     
     private func nextStory() {
-        guard let story = currentStory,
+        guard currentStory != nil,
               selectedChoice != nil else { return }
         
         HapticFeedbackManager.shared.impact(style: .light)

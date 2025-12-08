@@ -18,7 +18,7 @@ struct BigFeelingsApp: App {
 
 struct ContentView: View {
     var body: some View {
-        ChildrenListView()
+        WelcomeView()
     }
 }
 
