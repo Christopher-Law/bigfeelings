@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 enum StoryLoadingError: LocalizedError {
     case fileNotFound
@@ -27,6 +28,8 @@ enum StoryLoadingError: LocalizedError {
 class StoryLoader {
     static let shared = StoryLoader()
     
+    private let logger = Logger(subsystem: "com.bigfeelings", category: "StoryLoader")
+    
     private var stories: [Story] = []
     private var loadingError: StoryLoadingError?
     
@@ -37,7 +40,7 @@ class StoryLoader {
     func loadStories() {
         guard let url = Bundle.main.url(forResource: "scenarios", withExtension: "json") else {
             loadingError = .fileNotFound
-            print("Error: scenarios.json not found in bundle")
+            logger.error("scenarios.json not found in bundle")
             return
         }
         
@@ -48,10 +51,10 @@ class StoryLoader {
             loadingError = nil
         } catch let error as DecodingError {
             loadingError = .decodingFailed(error)
-            print("Error decoding stories: \(error)")
+            logger.error("Error decoding stories: \(error.localizedDescription)")
         } catch {
             loadingError = .invalidData
-            print("Error loading stories: \(error.localizedDescription)")
+            logger.error("Error loading stories: \(error.localizedDescription)")
         }
     }
     

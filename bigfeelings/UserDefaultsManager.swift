@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import os.log
 
 class UserDefaultsManager {
     static let shared = UserDefaultsManager()
+    
+    private let logger = Logger(subsystem: "com.bigfeelings", category: "UserDefaultsManager")
     
     private let selectedAgeKey = "selectedAge"
     private let completedStoriesKey = "completedStories"
@@ -85,17 +88,28 @@ class UserDefaultsManager {
         sessions.removeAll { $0.id == session.id }
         sessions.append(session)
         
-        if let encoded = try? JSONEncoder().encode(sessions) {
+        do {
+            let encoded = try JSONEncoder().encode(sessions)
             UserDefaults.standard.set(encoded, forKey: quizSessionsKey)
+        } catch {
+            logger.error("Error encoding quiz sessions: \(error.localizedDescription)")
         }
     }
     
     func getQuizSessions() -> [QuizSession] {
-        guard let data = UserDefaults.standard.data(forKey: quizSessionsKey),
-              let sessions = try? JSONDecoder().decode([QuizSession].self, from: data) else {
+        guard let data = UserDefaults.standard.data(forKey: quizSessionsKey) else {
             return []
         }
-        return sessions
+        
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode([QuizSession].self, from: data)
+        } catch {
+            logger.error("Error decoding quiz sessions: \(error.localizedDescription)")
+            // If decoding fails, clear corrupted data
+            UserDefaults.standard.removeObject(forKey: quizSessionsKey)
+            return []
+        }
     }
     
     func getQuizSessions(for ageRange: AgeRange) -> [QuizSession] {
@@ -137,10 +151,8 @@ class UserDefaultsManager {
             let encoder = JSONEncoder()
             let encoded = try encoder.encode(children)
             UserDefaults.standard.set(encoded, forKey: childrenKey)
-            // Ensure data is written immediately
-            UserDefaults.standard.synchronize()
         } catch {
-            print("Error saving child: \(error.localizedDescription)")
+            logger.error("Error saving child: \(error.localizedDescription)")
         }
     }
     
@@ -154,7 +166,7 @@ class UserDefaultsManager {
             let children = try decoder.decode([Child].self, from: data)
             return children.sorted { $0.name < $1.name }
         } catch {
-            print("Error loading children: \(error.localizedDescription)")
+            logger.error("Error loading children: \(error.localizedDescription)")
             // If decoding fails, clear corrupted data
             UserDefaults.standard.removeObject(forKey: childrenKey)
             return []
@@ -174,10 +186,8 @@ class UserDefaultsManager {
             let encoder = JSONEncoder()
             let encoded = try encoder.encode(children)
             UserDefaults.standard.set(encoded, forKey: childrenKey)
-            // Ensure data is written immediately
-            UserDefaults.standard.synchronize()
         } catch {
-            print("Error deleting child: \(error.localizedDescription)")
+            logger.error("Error deleting child: \(error.localizedDescription)")
             return
         }
         
@@ -196,8 +206,11 @@ class UserDefaultsManager {
         // Remove quiz sessions for this child
         var allSessions = getQuizSessions()
         allSessions.removeAll { $0.childId == id }
-        if let encoded = try? JSONEncoder().encode(allSessions) {
+        do {
+            let encoded = try JSONEncoder().encode(allSessions)
             UserDefaults.standard.set(encoded, forKey: quizSessionsKey)
+        } catch {
+            logger.error("Error encoding quiz sessions during child deletion: \(error.localizedDescription)")
         }
     }
     
@@ -264,16 +277,24 @@ class UserDefaultsManager {
             let encoded = try encoder.encode(achievements)
             UserDefaults.standard.set(encoded, forKey: achievementsKey(forChildId: childId))
         } catch {
-            print("Error saving achievements: \(error.localizedDescription)")
+            logger.error("Error saving achievements: \(error.localizedDescription)")
         }
     }
     
     func getAchievements(forChildId childId: String) -> [Achievement] {
-        guard let data = UserDefaults.standard.data(forKey: achievementsKey(forChildId: childId)),
-              let achievements = try? JSONDecoder().decode([Achievement].self, from: data) else {
+        guard let data = UserDefaults.standard.data(forKey: achievementsKey(forChildId: childId)) else {
             return []
         }
-        return achievements
+        
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode([Achievement].self, from: data)
+        } catch {
+            logger.error("Error decoding achievements: \(error.localizedDescription)")
+            // If decoding fails, clear corrupted data
+            UserDefaults.standard.removeObject(forKey: achievementsKey(forChildId: childId))
+            return []
+        }
     }
     
     func saveStreak(forChildId childId: String, streak: Int, lastDate: Date) {

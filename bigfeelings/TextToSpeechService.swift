@@ -8,10 +8,20 @@
 import AVFoundation
 import Combine
 import UIKit
+import os.log
 
 class TextToSpeechService: NSObject, ObservableObject {
+    private let logger = Logger(subsystem: "com.bigfeelings", category: "TextToSpeechService")
     private let synthesizer = AVSpeechSynthesizer()
     @Published var isSpeaking = false
+    
+    // Speech settings
+    private enum SpeechSettings {
+        static let rate: Float = 0.45 // Child-friendly rate
+        static let pitchMultiplier: Float = 1.1 // Slightly higher pitch
+        static let volume: Float = 1.0
+        static let language = "en-US"
+    }
     
     override init() {
         super.init()
@@ -43,14 +53,14 @@ class TextToSpeechService: NSObject, ObservableObject {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Error setting up audio session: \(error)")
+            logger.error("Error setting up audio session: \(error.localizedDescription)")
         }
         
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.rate = 0.45 // Child-friendly rate
-        utterance.pitchMultiplier = 1.1 // Slightly higher pitch
-        utterance.volume = 1.0
+        utterance.voice = AVSpeechSynthesisVoice(language: SpeechSettings.language)
+        utterance.rate = SpeechSettings.rate
+        utterance.pitchMultiplier = SpeechSettings.pitchMultiplier
+        utterance.volume = SpeechSettings.volume
         
         synthesizer.speak(utterance)
         isSpeaking = true
@@ -66,7 +76,7 @@ class TextToSpeechService: NSObject, ObservableObject {
         do {
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         } catch {
-            print("Error deactivating audio session: \(error)")
+            logger.error("Error deactivating audio session: \(error.localizedDescription)")
         }
     }
 }

@@ -23,6 +23,13 @@ struct QuizView: View {
     @State private var shuffledChoicesByStory: [String: [Choice]] = [:]
     @State private var showAchievements = false
     
+    // Animation and timing constants
+    private enum Timing {
+        static let selectionDelay: TimeInterval = 0.5
+        static let scrollAnimationDuration: TimeInterval = 0.3
+        static let buttonPressDelay: TimeInterval = 0.1
+    }
+    
     private var currentStory: Story? {
         guard currentIndex < stories.count else { return nil }
         return stories[currentIndex]
@@ -140,17 +147,13 @@ struct QuizView: View {
                         }
                         .onChange(of: currentIndex) {
                             // Scroll to top when moving to next question
-                            DispatchQueue.main.async {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    proxy.scrollTo("top", anchor: .top)
-                                }
+                            withAnimation(.easeInOut(duration: Timing.scrollAnimationDuration)) {
+                                proxy.scrollTo("top", anchor: .top)
                             }
                         }
                         .onAppear {
                             // Ensure scroll is at top when view appears
-                            DispatchQueue.main.async {
-                                proxy.scrollTo("top", anchor: .top)
-                            }
+                            proxy.scrollTo("top", anchor: .top)
                         }
                     }
                 } else {
@@ -271,7 +274,7 @@ struct QuizView: View {
         }
         
         // Automatically advance after a brief delay to show selection
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Timing.selectionDelay) {
             nextStory()
         }
     }
@@ -348,7 +351,7 @@ struct QuizChoiceButton: View {
             withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                 isPressed = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Timing.buttonPressDelay) {
                 isPressed = false
                 action()
             }
