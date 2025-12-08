@@ -13,7 +13,6 @@ struct QuizResultsView: View {
     let onDismiss: (() -> Void)?
     let onNavigateToGrowth: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
-    @State private var navigateToStories = false
     @State private var unlockedAchievement: Achievement?
     
     private let score: QuizScore
@@ -126,7 +125,12 @@ struct QuizResultsView: View {
                         // Buttons
                         VStack(spacing: 16) {
                             Button(action: {
-                                navigateToStories = true
+                                // Dismiss QuizResultsView first
+                                dismiss()
+                                // Then dismiss QuizView to return to StoriesListView
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    onDismiss?()
+                                }
                             }) {
                                 Text("Back to Stories")
                                     .font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -165,6 +169,7 @@ struct QuizResultsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
@@ -180,9 +185,6 @@ struct QuizResultsView: View {
                         }
                     }
                 }
-            }
-            .navigationDestination(isPresented: $navigateToStories) {
-                StoriesListView()
             }
             .onAppear {
                 // Record activity for streak and check achievements

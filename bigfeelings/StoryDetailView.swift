@@ -121,6 +121,7 @@ struct StoryDetailView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(false)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack(spacing: 12) {
@@ -171,7 +172,10 @@ struct StoryDetailView: View {
             }
         }
         .sheet(isPresented: $showEnding) {
-            EndingView(story: story)
+            EndingView(story: story, onBackToStories: {
+                // Dismiss StoryDetailView to go back to StoriesListView
+                dismiss()
+            })
         }
         .sheet(isPresented: $showAchievements) {
             if let child = activeChild {

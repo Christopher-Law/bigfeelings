@@ -9,9 +9,14 @@ import SwiftUI
 
 struct EndingView: View {
     let story: Story
+    let onBackToStories: (() -> Void)?
     @Environment(\.dismiss) private var dismiss
-    @State private var navigateToStories = false
     @State private var unlockedAchievement: Achievement?
+    
+    init(story: Story, onBackToStories: (() -> Void)? = nil) {
+        self.story = story
+        self.onBackToStories = onBackToStories
+    }
     
     var body: some View {
         NavigationStack {
@@ -57,7 +62,12 @@ struct EndingView: View {
                         // Buttons
                         VStack(spacing: 16) {
                             Button(action: {
-                                navigateToStories = true
+                                // Dismiss EndingView first
+                                dismiss()
+                                // Then navigate back to StoriesListView (dismissing StoryDetailView)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    onBackToStories?()
+                                }
                             }) {
                                 Text("Back to Stories")
                                     .font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -120,9 +130,7 @@ struct EndingView: View {
                 }
             }
             .achievementToast(achievement: $unlockedAchievement)
-            .navigationDestination(isPresented: $navigateToStories) {
-                StoriesListView()
-            }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

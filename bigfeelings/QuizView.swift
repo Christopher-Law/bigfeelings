@@ -167,6 +167,7 @@ struct QuizView: View {
             }
             .navigationTitle("Quiz Mode")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Exit") {
