@@ -21,9 +21,14 @@ struct EndingView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
+                // Background - matching Welcome screen style
                 LinearGradient(
-                    colors: [Color.softGreen.opacity(0.3), Color.softBlue.opacity(0.3)],
+                    colors: [
+                        Color.lavender.opacity(0.4),
+                        Color.mint.opacity(0.4),
+                        Color.sky.opacity(0.3),
+                        Color.cream.opacity(0.3)
+                    ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )

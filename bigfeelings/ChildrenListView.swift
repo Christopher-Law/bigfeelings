@@ -17,9 +17,14 @@ struct ChildrenListView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Gradient background
+                // Gradient background - matching Welcome screen style
                 LinearGradient(
-                    colors: [Color.lavender.opacity(0.3), Color.mint.opacity(0.3)],
+                    colors: [
+                        Color.lavender.opacity(0.4),
+                        Color.mint.opacity(0.4),
+                        Color.sky.opacity(0.3),
+                        Color.cream.opacity(0.3)
+                    ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -31,11 +36,11 @@ struct ChildrenListView: View {
                             .font(.system(size: 64))
                             .foregroundColor(.secondary)
                         
-                        Text("No children yet")
+                        Text("Let's Get Started!")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.primary)
                         
-                        Text("Add a child to get started")
+                        Text("Add a child to begin exploring stories together")
                             .font(.system(size: 16, design: .rounded))
                             .foregroundColor(.secondary)
                         
@@ -236,10 +241,9 @@ struct ChildCard: View {
                             .foregroundColor(.secondary.opacity(0.8))
                     }
                 } else {
-                    Text("No age set")
+                    Text("Age not set yet")
                         .font(.system(size: 14, design: .rounded))
-                        .foregroundColor(.orange)
-                        .italic()
+                        .foregroundColor(.secondary)
                 }
                 
                 if let notes = child.notes, !notes.isEmpty {
@@ -290,11 +294,11 @@ struct ChildCard: View {
         }
         .scaleEffect(isPressed ? 0.98 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
-        .alert("Delete Child", isPresented: $showDeleteConfirmation) {
+        .alert("Remove \(child.name)?", isPresented: $showDeleteConfirmation) {
             Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive, action: onDelete)
+            Button("Remove", role: .destructive, action: onDelete)
         } message: {
-            Text("Are you sure you want to delete \(child.name)? This action cannot be undone.")
+            Text("This will remove \(child.name) from your list. You can always add them back later.")
         }
     }
 }

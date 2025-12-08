@@ -18,9 +18,14 @@ struct GrowthView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.sky.opacity(0.2), Color.cream.opacity(0.2)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -32,11 +37,11 @@ struct GrowthView: View {
                         .font(.system(size: 64))
                         .foregroundColor(.secondary)
                     
-                    Text("No Growth History")
+                    Text("Your Journey Starts Here")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.primary)
                     
-                    Text("Complete quizzes to see \(child.name)'s progress here")
+                    Text("Complete story explorations to see \(child.name)'s amazing progress!")
                         .font(.system(size: 16, design: .rounded))
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -203,7 +208,7 @@ struct EmotionalIntelligenceChart: View {
                             }
                             Spacer()
                         }
-                        Text("Complete more quizzes to see your growth chart!")
+                        Text("Complete more story explorations to see your growth chart!")
                             .font(.system(size: 13, design: .rounded))
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -277,7 +282,7 @@ struct ProgressOverviewCard: View {
             
             HStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Total Quizzes")
+                    Text("Story Explorations")
                         .font(.system(size: 14, design: .rounded))
                         .foregroundColor(.secondary)
                     Text("\(sessions.count)")

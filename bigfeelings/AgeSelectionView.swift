@@ -14,9 +14,14 @@ struct AgeSelectionView: View {
     
     var body: some View {
         ZStack {
-            // Gradient background
+            // Gradient background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.lavender.opacity(0.3), Color.mint.opacity(0.3)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

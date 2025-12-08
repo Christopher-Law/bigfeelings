@@ -38,9 +38,14 @@ struct ChildFormView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.sky.opacity(0.2), Color.cream.opacity(0.2)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -51,9 +56,9 @@ struct ChildFormView: View {
                     TextField("Name", text: $name)
                         .font(.system(size: 18, design: .rounded))
                 } header: {
-                    Text("Basic Information")
+                    Text("About This Child")
                 } footer: {
-                    Text("Enter the child's name")
+                    Text("What's their name?")
                 }
                 
                 Section {
@@ -63,7 +68,7 @@ struct ChildFormView: View {
                 } header: {
                     Text("Age")
                 } footer: {
-                    Text("Enter the child's age. Stories will be automatically selected based on age ranges (4-6, 7-9, 10-12).")
+                    Text("We'll find the perfect stories based on their age (4-6, 7-9, or 10-12).")
                 }
                 
                 Section {
@@ -73,7 +78,7 @@ struct ChildFormView: View {
                 } header: {
                     Text("Notes")
                 } footer: {
-                    Text("Optional: Add any notes about this child")
+                    Text("Optional: Add any special notes or reminders")
                 }
             }
             .scrollContentBackground(.hidden)

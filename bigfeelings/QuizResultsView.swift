@@ -27,9 +27,14 @@ struct QuizResultsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
+                // Background - matching Welcome screen style
                 LinearGradient(
-                    colors: [Color.softGreen.opacity(0.3), Color.softBlue.opacity(0.3)],
+                    colors: [
+                        Color.lavender.opacity(0.4),
+                        Color.mint.opacity(0.4),
+                        Color.sky.opacity(0.3),
+                        Color.cream.opacity(0.3)
+                    ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -45,7 +50,7 @@ struct QuizResultsView: View {
                             .font(.system(size: 100))
                         
                         // Title
-                        Text("Quiz Complete!")
+                        Text("You Did It!")
                             .font(.system(size: 36, weight: .bold, design: .rounded))
                             .foregroundColor(.primary)
                             .multilineTextAlignment(.center)
@@ -56,7 +61,7 @@ struct QuizResultsView: View {
                                 .font(.system(size: 28, weight: .bold, design: .rounded))
                                 .foregroundColor(gradeColor)
                             
-                            Text("\(Int(score.goodPercentage))% Great Choices")
+                            Text("\(Int(score.goodPercentage))% Wonderful Choices")
                                 .font(.system(size: 20, weight: .medium, design: .rounded))
                                 .foregroundColor(.primary)
                         }
@@ -65,7 +70,7 @@ struct QuizResultsView: View {
                         // Score breakdown
                         VStack(spacing: 16) {
                             ScoreRow(
-                                label: "Great Choices",
+                                label: "Wonderful Choices",
                                 count: score.good,
                                 total: score.total,
                                 color: .vibrantGreen,
@@ -73,7 +78,7 @@ struct QuizResultsView: View {
                             )
                             
                             ScoreRow(
-                                label: "Okay Choices",
+                                label: "Good Choices",
                                 count: score.okay,
                                 total: score.total,
                                 color: Color(hex: "F59E0B"), // Darker amber
@@ -89,7 +94,7 @@ struct QuizResultsView: View {
                             )
                             
                             ScoreRow(
-                                label: "Unrelated",
+                                label: "Let's Try Again",
                                 count: score.unrelated,
                                 total: score.total,
                                 color: Color(hex: "A855F7"), // Darker purple
@@ -230,11 +235,11 @@ struct QuizResultsView: View {
         dateFormatter.timeStyle = .short
         
         let shareText = """
-        Quiz Results - \(session.ageRange.displayName)
+        Story Exploration Results - \(session.ageRange.displayName)
         Completed: \(dateFormatter.string(from: session.startDate))
         
         Score: \(score.overallGrade) (\(Int(score.goodPercentage))%)
-        Great Choices: \(score.good)/\(score.total)
+        Wonderful Choices: \(score.good)/\(score.total)
         
         \(summary)
         """

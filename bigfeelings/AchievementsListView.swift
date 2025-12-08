@@ -30,9 +30,14 @@ struct AchievementsListView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.sky.opacity(0.2), Color.cream.opacity(0.2)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

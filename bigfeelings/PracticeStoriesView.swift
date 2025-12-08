@@ -14,9 +14,14 @@ struct PracticeStoriesView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.sky.opacity(0.2), Color.cream.opacity(0.2)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -28,12 +33,12 @@ struct PracticeStoriesView: View {
                         .font(.system(size: 64))
                         .foregroundColor(.secondary)
                     
-                    Text("No stories available")
+                    Text("Stories Coming Soon!")
                         .font(.system(size: 18, design: .rounded))
                         .foregroundColor(.secondary)
                     
                     if StoryLoader.shared.hasError() {
-                        Text("There was an error loading stories. Please try again later.")
+                        Text("We're having trouble loading stories right now. Please try again soon!")
                             .font(.system(size: 14, design: .rounded))
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -57,7 +62,7 @@ struct PracticeStoriesView: View {
                 .scrollIndicators(.visible)
             }
         }
-        .navigationTitle("Practice Stories")
+        .navigationTitle("Read Stories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

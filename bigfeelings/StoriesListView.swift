@@ -19,9 +19,14 @@ struct StoriesListView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Background - matching Welcome screen style
             LinearGradient(
-                colors: [Color.sky.opacity(0.2), Color.cream.opacity(0.2)],
+                colors: [
+                    Color.lavender.opacity(0.4),
+                    Color.mint.opacity(0.4),
+                    Color.sky.opacity(0.3),
+                    Color.cream.opacity(0.3)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -30,12 +35,12 @@ struct StoriesListView: View {
             if selectedAge != nil {
                 if stories.isEmpty {
                     VStack(spacing: 16) {
-                        Text("No stories available")
-                            .font(.system(size: 18, design: .rounded))
-                            .foregroundColor(.secondary)
+                    Text("Stories Coming Soon!")
+                        .font(.system(size: 18, design: .rounded))
+                        .foregroundColor(.secondary)
                         
                         if StoryLoader.shared.hasError() {
-                            Text("There was an error loading stories. Please try again later.")
+                            Text("We're having trouble loading stories right now. Please try again soon!")
                                 .font(.system(size: 14, design: .rounded))
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
@@ -54,21 +59,21 @@ struct StoriesListView: View {
                                 }) {
                                     LargeTile(
                                         icon: "checkmark.circle.fill",
-                                        title: "Start Quiz",
-                                        subtitle: "Test your knowledge",
+                                        title: "Explore Stories",
+                                        subtitle: "Answer questions about feelings",
                                         borderColor: Color.vibrantGreen
                                     )
                                 }
                                 .buttonStyle(TileButtonStyle())
-                                .accessibilityLabel("Start Quiz")
-                                .accessibilityHint("Take a quiz with all stories for this age group")
+                                .accessibilityLabel("Explore Stories")
+                                .accessibilityHint("Answer questions about feelings with stories for this age group")
                                 
                                 // Practice tile
                                 NavigationLink(destination: PracticeStoriesView(stories: stories, activeChild: activeChild)) {
                                     LargeTile(
                                         icon: "book.fill",
-                                        title: "Practice",
-                                        subtitle: "Read stories",
+                                        title: "Read Stories",
+                                        subtitle: "Discover new adventures",
                                         borderColor: Color.vibrantOrange
                                     )
                                 }
@@ -108,11 +113,11 @@ struct StoriesListView: View {
                         .font(.system(size: 64))
                         .foregroundColor(.secondary)
                     
-                    Text("No child selected")
+                    Text("Choose a Child")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.primary)
                     
-                    Text("Please select a child to view stories")
+                    Text("Select a child to start exploring stories together")
                         .font(.system(size: 16, design: .rounded))
                         .foregroundColor(.secondary)
                     
@@ -141,11 +146,11 @@ struct StoriesListView: View {
                         .font(.system(size: 64))
                         .foregroundColor(.orange)
                     
-                    Text("Age not set")
+                    Text("Let's Set an Age")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.primary)
                     
-                    Text("Please set an age for \(activeChild?.name ?? "this child") to view stories")
+                    Text("Help us find the perfect stories for \(activeChild?.name ?? "your child") by adding their age")
                         .font(.system(size: 16, design: .rounded))
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -174,7 +179,7 @@ struct StoriesListView: View {
                 VStack {
                     ProgressView()
                         .scaleEffect(1.5)
-                    Text("Loading stories...")
+                    Text("Finding stories...")
                         .font(.system(size: 18, design: .rounded))
                         .foregroundColor(.secondary)
                         .padding(.top, 16)
@@ -197,10 +202,10 @@ struct StoriesListView: View {
         }
         .fullScreenCover(isPresented: $showQuiz) {
             if let ageRange = selectedAge {
-                // Randomly select 5 stories for the quiz
+                // Randomly select 5 stories for exploration
                 let quizStories = Array(stories.shuffled().prefix(5))
                 QuizView(stories: quizStories, ageRange: ageRange, child: activeChild, onNavigateToGrowth: {
-                    // Navigate to Growth page after quiz completion
+                    // Navigate to Growth page after story exploration completion
                     navigateToGrowth = true
                 })
             }

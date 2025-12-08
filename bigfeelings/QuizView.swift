@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+// Animation and timing constants
+private enum Timing {
+    static let selectionDelay: TimeInterval = 0.5
+    static let scrollAnimationDuration: TimeInterval = 0.3
+    static let buttonPressDelay: TimeInterval = 0.1
+}
+
 struct QuizView: View {
     let stories: [Story]
     let ageRange: AgeRange
@@ -23,13 +30,6 @@ struct QuizView: View {
     @State private var shuffledChoicesByStory: [String: [Choice]] = [:]
     @State private var showAchievements = false
     
-    // Animation and timing constants
-    private enum Timing {
-        static let selectionDelay: TimeInterval = 0.5
-        static let scrollAnimationDuration: TimeInterval = 0.3
-        static let buttonPressDelay: TimeInterval = 0.1
-    }
-    
     private var currentStory: Story? {
         guard currentIndex < stories.count else { return nil }
         return stories[currentIndex]
@@ -43,9 +43,14 @@ struct QuizView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
+                // Background - matching Welcome screen style
                 LinearGradient(
-                    colors: [Color.cream.opacity(0.3), Color.sky.opacity(0.3)],
+                    colors: [
+                        Color.lavender.opacity(0.4),
+                        Color.mint.opacity(0.4),
+                        Color.sky.opacity(0.3),
+                        Color.cream.opacity(0.3)
+                    ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -161,19 +166,19 @@ struct QuizView: View {
                     VStack {
                         ProgressView()
                             .scaleEffect(1.5)
-                        Text("Loading quiz...")
+                        Text("Getting ready...")
                             .font(.system(size: 18, design: .rounded))
                             .foregroundColor(.secondary)
                             .padding(.top, 16)
                     }
                 }
             }
-            .navigationTitle("Quiz Mode")
+            .navigationTitle("Exploring Stories")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Exit") {
+                    Button("Back") {
                         dismiss()
                     }
                 }
