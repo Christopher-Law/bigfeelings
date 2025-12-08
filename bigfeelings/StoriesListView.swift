@@ -49,60 +49,61 @@ struct StoriesListView: View {
                     }
                 } else {
                     ScrollView {
-                        VStack(spacing: 24) {
-                            // Three large tiles
-                            VStack(spacing: 20) {
-                                // Start Quiz tile
+                        VStack(spacing: 16) {
+                            // Activity selection cards - matching app design language
+                            VStack(spacing: 16) {
+                                // Explore Stories card
                                 Button(action: {
                                     HapticFeedbackManager.shared.impact(style: .medium)
                                     showQuiz = true
                                 }) {
-                                    LargeTile(
+                                    ActivityCard(
                                         icon: "checkmark.circle.fill",
                                         title: "Explore Stories",
                                         subtitle: "Answer questions about feelings",
-                                        borderColor: Color.vibrantGreen
+                                        iconColor: Color.vibrantGreen
                                     )
                                 }
-                                .buttonStyle(TileButtonStyle())
+                                .buttonStyle(ActivityCardButtonStyle())
                                 .accessibilityLabel("Explore Stories")
                                 .accessibilityHint("Answer questions about feelings with stories for this age group")
                                 
-                                // Practice tile
+                                // Read Stories card
                                 NavigationLink(destination: PracticeStoriesView(stories: stories, activeChild: activeChild)) {
-                                    LargeTile(
+                                    ActivityCard(
                                         icon: "book.fill",
                                         title: "Read Stories",
                                         subtitle: "Discover new adventures",
-                                        borderColor: Color.vibrantOrange
+                                        iconColor: Color.vibrantBlue
                                     )
                                 }
                                 .simultaneousGesture(TapGesture().onEnded {
                                     HapticFeedbackManager.shared.impact(style: .medium)
                                 })
-                                .accessibilityLabel("Practice Stories")
+                                .accessibilityLabel("Read Stories")
                                 .accessibilityHint("Read and practice with stories")
                                 
-                                // Growth tile (if child is selected)
+                                // Growth card (if child is selected)
                                 if let child = activeChild {
                                     Button(action: {
                                         HapticFeedbackManager.shared.impact(style: .medium)
                                         showPastQuizzes = true
                                     }) {
-                                        LargeTile(
+                                        ActivityCard(
                                             icon: "chart.line.uptrend.xyaxis",
                                             title: "Growth",
                                             subtitle: "View progress",
-                                            borderColor: Color.vibrantBlue
+                                            iconColor: Color.vibrantOrange
                                         )
                                     }
-                                    .buttonStyle(TileButtonStyle())
+                                    .buttonStyle(ActivityCardButtonStyle())
                                     .accessibilityLabel("View Growth")
                                     .accessibilityHint("View \(child.name)'s growth and progress")
                                 }
                             }
                             .padding(.horizontal, 20)
-                            .padding(.vertical, 20)
+                            .padding(.top, 20)
+                            .padding(.bottom, 30)
                         }
                     }
                     .scrollIndicators(.visible)
@@ -347,48 +348,57 @@ struct StoryCard: View {
     }
 }
 
-struct LargeTile: View {
+struct ActivityCard: View {
     let icon: String
     let title: String
     let subtitle: String
-    let borderColor: Color
+    let iconColor: Color
     
     var body: some View {
-        VStack(spacing: 14) {
-            // Icon
-            Image(systemName: icon)
-                .font(.system(size: 36, weight: .semibold))
-                .foregroundColor(borderColor)
+        HStack(spacing: 20) {
+            // Icon with subtle background
+            ZStack {
+                Circle()
+                    .fill(iconColor.opacity(0.1))
+                    .frame(width: 60, height: 60)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 28, weight: .semibold))
+                    .foregroundColor(iconColor)
+            }
             
-            VStack(spacing: 6) {
+            // Content
+            VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
                 
                 Text(subtitle)
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
+                    .font(.system(size: 16, design: .rounded))
                     .foregroundColor(.secondary)
             }
+            
+            Spacer()
+            
+            // Chevron indicator
+            Image(systemName: "chevron.right")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.secondary.opacity(0.5))
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 140)
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(borderColor.opacity(0.08))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(borderColor.opacity(0.3), lineWidth: 2.5)
-                )
-                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
 
-struct TileButtonStyle: ButtonStyle {
+struct ActivityCardButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }
