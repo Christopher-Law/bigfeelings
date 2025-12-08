@@ -95,29 +95,6 @@ struct ProgressOverviewCard: View {
         return total / Double(sessions.count)
     }
     
-    private var trend: String {
-        guard sessions.count >= 2 else { return "📊" }
-        
-        // Compare most recent 3 with previous 3 (avoiding overlap)
-        let takeCount = min(3, sessions.count / 2)
-        let recent = Array(sessions.prefix(takeCount)).map { $0.score.goodPercentage }
-        let older = Array(sessions.suffix(takeCount)).map { $0.score.goodPercentage }
-        
-        // If we don't have enough sessions, compare first vs last
-        guard !recent.isEmpty && !older.isEmpty else { return "📊" }
-        
-        let recentAvg = recent.reduce(0, +) / Double(recent.count)
-        let olderAvg = older.reduce(0, +) / Double(older.count)
-        
-        if recentAvg > olderAvg + 5 {
-            return "📈 Improving"
-        } else if recentAvg < olderAvg - 5 {
-            return "📉 Needs Support"
-        } else {
-            return "➡️ Steady"
-        }
-    }
-    
     private var summary: String {
         let percentage = Int(averageScore)
         
@@ -131,6 +108,37 @@ struct ProgressOverviewCard: View {
         default:
             return "\(childName) is beginning to learn about emotions and healthy coping strategies. Patient but consistent guidance, repeated practice, and celebrating small wins are essential to help build their confidence and skills."
         }
+    }
+    
+    private var strugglingFeelings: [String] {
+        // Get all answers from all sessions
+        let allAnswers = sessions.flatMap { $0.answers }
+        
+        // Group answers by feeling
+        let feelingGroups = Dictionary(grouping: allAnswers) { $0.feeling }
+        
+        // Calculate success rate for each feeling (percentage of "good" choices)
+        var feelingScores: [(feeling: String, successRate: Double, count: Int)] = []
+        
+        for (feeling, answers) in feelingGroups {
+            let goodCount = answers.filter { $0.selectedChoiceType == .good }.count
+            let totalCount = answers.count
+            let successRate = totalCount > 0 ? Double(goodCount) / Double(totalCount) : 0.0
+            
+            // Only include feelings with at least 2 attempts for meaningful data
+            if totalCount >= 2 {
+                feelingScores.append((feeling: feeling, successRate: successRate, count: totalCount))
+            }
+        }
+        
+        // Sort by success rate (lowest first) and return top 3-5 struggling feelings
+        let struggling = feelingScores
+            .sorted { $0.successRate < $1.successRate }
+            .prefix(5)
+            .filter { $0.successRate < 0.75 } // Only include feelings with < 75% success rate
+            .map { $0.feeling }
+        
+        return Array(struggling)
     }
     
     
@@ -165,13 +173,6 @@ struct ProgressOverviewCard: View {
                 }
             }
             
-            HStack {
-                Text(trend)
-                    .font(.system(size: 16, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
-                Spacer()
-            }
-            
             // Summary section
             Divider()
                 .padding(.vertical, 8)
@@ -185,6 +186,23 @@ struct ProgressOverviewCard: View {
                     .font(.system(size: 14, design: .rounded))
                     .foregroundColor(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            // Growth area - struggling feelings
+            if !strugglingFeelings.isEmpty {
+                Divider()
+                    .padding(.vertical, 8)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Areas for Growth")
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.primary)
+                    
+                    Text("Feelings to practice together: \(strugglingFeelings.joined(separator: ", "))")
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
         .padding(20)
@@ -221,6 +239,37 @@ struct ChildProgressSummaryCard: View {
         }
     }
     
+    private var strugglingFeelings: [String] {
+        // Get all answers from all sessions
+        let allAnswers = sessions.flatMap { $0.answers }
+        
+        // Group answers by feeling
+        let feelingGroups = Dictionary(grouping: allAnswers) { $0.feeling }
+        
+        // Calculate success rate for each feeling (percentage of "good" choices)
+        var feelingScores: [(feeling: String, successRate: Double, count: Int)] = []
+        
+        for (feeling, answers) in feelingGroups {
+            let goodCount = answers.filter { $0.selectedChoiceType == .good }.count
+            let totalCount = answers.count
+            let successRate = totalCount > 0 ? Double(goodCount) / Double(totalCount) : 0.0
+            
+            // Only include feelings with at least 2 attempts for meaningful data
+            if totalCount >= 2 {
+                feelingScores.append((feeling: feeling, successRate: successRate, count: totalCount))
+            }
+        }
+        
+        // Sort by success rate (lowest first) and return top 3-5 struggling feelings
+        let struggling = feelingScores
+            .sorted { $0.successRate < $1.successRate }
+            .prefix(5)
+            .filter { $0.successRate < 0.75 } // Only include feelings with < 75% success rate
+            .map { $0.feeling }
+        
+        return Array(struggling)
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("How \(childName) is Doing")
@@ -231,6 +280,23 @@ struct ChildProgressSummaryCard: View {
                 .font(.system(size: 14, design: .rounded))
                 .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+            
+            // Growth area - struggling feelings
+            if !strugglingFeelings.isEmpty {
+                Divider()
+                    .padding(.vertical, 8)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Areas for Growth")
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.primary)
+                    
+                    Text("Feelings to practice together: \(strugglingFeelings.joined(separator: ", "))")
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
         }
         .padding(20)
         .background(

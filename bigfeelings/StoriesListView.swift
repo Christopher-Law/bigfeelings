@@ -16,6 +16,7 @@ struct StoriesListView: View {
     @State private var navigateToGrowth = false
     @State private var showAchievements = false
     @State private var navigateToPractice = false
+    @State private var showFeelingsJournal = false
     
     var body: some View {
         ZStack {
@@ -82,6 +83,24 @@ struct StoriesListView: View {
                                 })
                                 .accessibilityLabel("Read Stories")
                                 .accessibilityHint("Read and practice with stories")
+                                
+                                // Feelings Journal card (if child is selected)
+                                if let child = activeChild {
+                                    Button(action: {
+                                        HapticFeedbackManager.shared.impact(style: .medium)
+                                        showFeelingsJournal = true
+                                    }) {
+                                        ActivityCard(
+                                            icon: "heart.text.square.fill",
+                                            title: "Feelings Journal",
+                                            subtitle: "Daily check-in",
+                                            iconColor: Color.vibrantPink
+                                        )
+                                    }
+                                    .buttonStyle(ActivityCardButtonStyle())
+                                    .accessibilityLabel("Feelings Journal")
+                                    .accessibilityHint("Check in with \(child.name) about how they're feeling")
+                                }
                                 
                                 // Growth card (if child is selected)
                                 if let child = activeChild {
@@ -230,6 +249,11 @@ struct StoriesListView: View {
                 NavigationStack {
                     GrowthView(child: child)
                 }
+            }
+        }
+        .sheet(isPresented: $showFeelingsJournal) {
+            if let child = activeChild {
+                FeelingsJournalView(child: child)
             }
         }
     }

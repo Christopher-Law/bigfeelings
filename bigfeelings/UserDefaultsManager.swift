@@ -307,5 +307,66 @@ class UserDefaultsManager {
         let lastDate = UserDefaults.standard.object(forKey: lastActivityKey(forChildId: childId)) as? Date
         return (streak, lastDate)
     }
+    
+    // MARK: - Feelings Journal Management
+    
+    private func feelingsJournalKey(forChildId childId: String) -> String {
+        return "feelingsJournal_\(childId)"
+    }
+    
+    func saveJournalEntry(_ entry: FeelingsJournalEntry) {
+        var entries = getJournalEntries(forChildId: entry.childId)
+        // Remove old entry with same ID if exists (for updates)
+        entries.removeAll { $0.id == entry.id }
+        entries.append(entry)
+        
+        do {
+            let encoder = JSONEncoder()
+            let encoded = try encoder.encode(entries)
+            UserDefaults.standard.set(encoded, forKey: feelingsJournalKey(forChildId: entry.childId))
+        } catch {
+            logger.error("Error saving journal entry: \(error.localizedDescription)")
+        }
+    }
+    
+    func getJournalEntries(forChildId childId: String) -> [FeelingsJournalEntry] {
+        guard let data = UserDefaults.standard.data(forKey: feelingsJournalKey(forChildId: childId)) else {
+            return []
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let entries = try decoder.decode([FeelingsJournalEntry].self, from: data)
+            return entries.sorted { $0.timestamp > $1.timestamp }
+        } catch {
+            logger.error("Error decoding journal entries: \(error.localizedDescription)")
+            // If decoding fails, clear corrupted data
+            UserDefaults.standard.removeObject(forKey: feelingsJournalKey(forChildId: childId))
+            return []
+        }
+    }
+    
+    func hasJournalEntryToday(forChildId childId: String) -> Bool {
+        let entries = getJournalEntries(forChildId: childId)
+        return entries.contains { $0.isToday }
+    }
+    
+    func getTodaysJournalEntry(forChildId childId: String) -> FeelingsJournalEntry? {
+        let entries = getJournalEntries(forChildId: childId)
+        return entries.first { $0.isToday }
+    }
+    
+    func deleteJournalEntry(_ entry: FeelingsJournalEntry) {
+        var entries = getJournalEntries(forChildId: entry.childId)
+        entries.removeAll { $0.id == entry.id }
+        
+        do {
+            let encoder = JSONEncoder()
+            let encoded = try encoder.encode(entries)
+            UserDefaults.standard.set(encoded, forKey: feelingsJournalKey(forChildId: entry.childId))
+        } catch {
+            logger.error("Error deleting journal entry: \(error.localizedDescription)")
+        }
+    }
 }
 

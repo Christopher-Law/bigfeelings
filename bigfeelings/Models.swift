@@ -192,3 +192,67 @@ struct Child: Codable, Identifiable {
     }
 }
 
+// MARK: - Feelings Journal Models
+
+struct FeelingsJournalEntry: Codable, Identifiable {
+    let id: String
+    let childId: String
+    let feelingEmoji: String
+    let feelingName: String
+    let notes: String?
+    let timestamp: Date
+    
+    init(id: String = UUID().uuidString, childId: String, feelingEmoji: String, feelingName: String, notes: String? = nil, timestamp: Date = Date()) {
+        self.id = id
+        self.childId = childId
+        self.feelingEmoji = feelingEmoji
+        self.feelingName = feelingName
+        self.notes = notes
+        self.timestamp = timestamp
+    }
+    
+    // Check if entry is from today
+    var isToday: Bool {
+        Calendar.current.isDateInToday(timestamp)
+    }
+    
+    // Get date string for display
+    var dateString: String {
+        let formatter = DateFormatter()
+        if Calendar.current.isDateInToday(timestamp) {
+            return "Today"
+        } else if Calendar.current.isDateInYesterday(timestamp) {
+            return "Yesterday"
+        } else {
+            formatter.dateStyle = .medium
+            return formatter.string(from: timestamp)
+        }
+    }
+}
+
+// Common feelings with emojis for check-in
+struct FeelingOption: Identifiable {
+    let id: String
+    let emoji: String
+    let name: String
+    
+    static let commonFeelings: [FeelingOption] = [
+        FeelingOption(id: "happy", emoji: "😊", name: "Happy"),
+        FeelingOption(id: "sad", emoji: "😢", name: "Sad"),
+        FeelingOption(id: "angry", emoji: "😠", name: "Angry"),
+        FeelingOption(id: "excited", emoji: "🤩", name: "Excited"),
+        FeelingOption(id: "worried", emoji: "😟", name: "Worried"),
+        FeelingOption(id: "calm", emoji: "😌", name: "Calm"),
+        FeelingOption(id: "proud", emoji: "😎", name: "Proud"),
+        FeelingOption(id: "scared", emoji: "😨", name: "Scared"),
+        FeelingOption(id: "confused", emoji: "😕", name: "Confused"),
+        FeelingOption(id: "grateful", emoji: "🙏", name: "Grateful"),
+        FeelingOption(id: "lonely", emoji: "😔", name: "Lonely"),
+        FeelingOption(id: "loved", emoji: "🥰", name: "Loved"),
+        FeelingOption(id: "frustrated", emoji: "😤", name: "Frustrated"),
+        FeelingOption(id: "peaceful", emoji: "☺️", name: "Peaceful"),
+        FeelingOption(id: "silly", emoji: "😜", name: "Silly"),
+        FeelingOption(id: "tired", emoji: "😴", name: "Tired")
+    ]
+}
+

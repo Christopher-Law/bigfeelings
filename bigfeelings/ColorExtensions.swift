@@ -24,6 +24,7 @@ extension Color {
     static let vibrantBlue = Color(hex: "3B82F6") // More vibrant blue
     static let vibrantGreen = Color(hex: "10B981") // More vibrant green
     static let vibrantOrange = Color(hex: "F97316") // More vibrant orange/amber
+    static let vibrantPink = Color(hex: "EC4899") // More vibrant pink
     
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
