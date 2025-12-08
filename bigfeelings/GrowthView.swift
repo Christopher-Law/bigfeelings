@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Charts
 
 struct GrowthView: View {
     let child: Child
@@ -50,11 +49,6 @@ struct GrowthView: View {
             } else {
                 ScrollView {
                     VStack(spacing: 20) {
-                        // Emotional Intelligence Growth Chart
-                        EmotionalIntelligenceChart(sessions: completedSessions)
-                            .padding(.horizontal, 20)
-                            .padding(.top, 10)
-                        
                         // Progress overview card
                         if completedSessions.count > 1 {
                             ProgressOverviewCard(sessions: completedSessions)
@@ -84,158 +78,6 @@ struct GrowthView: View {
         // Only load quizzes for this specific child
         // getQuizSessions(forChildId:) ensures only quizzes belonging to this child are returned
         quizSessions = UserDefaultsManager.shared.getQuizSessions(forChildId: child.id)
-    }
-}
-
-struct EmotionalIntelligenceChart: View {
-    let sessions: [QuizSession]
-    
-    private var chartData: [(date: Date, score: Double)] {
-        let calendar = Calendar.current
-        
-        // Group sessions by day (normalize to start of day)
-        let groupedByDay = Dictionary(grouping: sessions) { session in
-            calendar.startOfDay(for: session.startDate)
-        }
-        
-        // Calculate average score for each day
-        return groupedByDay
-            .map { (date, daySessions) in
-                let averageScore = daySessions.reduce(0.0) { $0 + $1.score.goodPercentage } / Double(daySessions.count)
-                return (date: date, score: averageScore)
-            }
-            .sorted { $0.date < $1.date }
-    }
-    
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter
-    }
-    
-    private var minScore: Double {
-        let scores = chartData.map { $0.score }
-        let min = scores.min() ?? 0
-        return max(0, min - 10)
-    }
-    
-    private var maxScore: Double {
-        let scores = chartData.map { $0.score }
-        let max = scores.max() ?? 100
-        return min(100, max + 10)
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("Emotional Intelligence Growth")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                Spacer()
-            }
-            
-            if #available(iOS 16.0, *) {
-                if chartData.count > 1 {
-                    Chart {
-                        // Area mark for gradient fill
-                        ForEach(Array(chartData.enumerated()), id: \.offset) { index, data in
-                            AreaMark(
-                                x: .value("Date", data.date, unit: .day),
-                                y: .value("Score", data.score)
-                            )
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [Color.vibrantBlue.opacity(0.3), Color.vibrantBlue.opacity(0.05)],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            )
-                            .interpolationMethod(.catmullRom)
-                        }
-                        
-                        // Line mark for the progression line
-                        ForEach(Array(chartData.enumerated()), id: \.offset) { index, data in
-                            LineMark(
-                                x: .value("Date", data.date, unit: .day),
-                                y: .value("Score", data.score)
-                            )
-                            .foregroundStyle(Color.vibrantBlue)
-                            .lineStyle(StrokeStyle(lineWidth: 3))
-                            .interpolationMethod(.catmullRom)
-                        }
-                        
-                        // Point marks for data points
-                        ForEach(Array(chartData.enumerated()), id: \.offset) { index, data in
-                            PointMark(
-                                x: .value("Date", data.date, unit: .day),
-                                y: .value("Score", data.score)
-                            )
-                            .foregroundStyle(Color.vibrantBlue)
-                            .symbolSize(60)
-                        }
-                    }
-                    .chartYScale(domain: minScore...maxScore)
-                    .chartXAxis {
-                        AxisMarks(values: .automatic(desiredCount: min(5, chartData.count))) { value in
-                            AxisGridLine()
-                            AxisValueLabel(format: .dateTime.month().day())
-                        }
-                    }
-                    .chartYAxis {
-                        AxisMarks(position: .leading, values: .automatic(desiredCount: 5)) { value in
-                            AxisGridLine()
-                            AxisValueLabel {
-                                if let intValue = value.as(Double.self) {
-                                    Text("\(Int(intValue))%")
-                                        .font(.system(size: 11, design: .rounded))
-                                }
-                            }
-                        }
-                    }
-                    .frame(height: 200)
-                } else if chartData.count == 1 {
-                    // Single data point - show a simple display
-                    VStack(spacing: 12) {
-                        HStack {
-                            Spacer()
-                            VStack(spacing: 4) {
-                                Text("\(Int(chartData[0].score))%")
-                                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                                    .foregroundColor(.vibrantBlue)
-                                Text("Current Score")
-                                    .font(.system(size: 14, design: .rounded))
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
-                        }
-                        Text("Complete more story explorations to see your growth chart!")
-                            .font(.system(size: 13, design: .rounded))
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .frame(height: 200)
-                }
-            } else {
-                // Fallback for iOS < 16
-                VStack(spacing: 12) {
-                    Text("Chart requires iOS 16+")
-                        .font(.system(size: 14, design: .rounded))
-                        .foregroundColor(.secondary)
-                    if chartData.count == 1 {
-                        Text("Current Score: \(Int(chartData[0].score))%")
-                            .font(.system(size: 16, weight: .semibold, design: .rounded))
-                            .foregroundColor(.primary)
-                    }
-                }
-                .frame(height: 200)
-            }
-        }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white.opacity(0.9))
-                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
-        )
     }
 }
 
