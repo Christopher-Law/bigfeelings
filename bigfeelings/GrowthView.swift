@@ -49,9 +49,13 @@ struct GrowthView: View {
             } else {
                 ScrollView {
                     VStack(spacing: 20) {
-                        // Progress overview card
+                        // Progress overview card with summary
                         if completedSessions.count > 1 {
-                            ProgressOverviewCard(sessions: completedSessions)
+                            ProgressOverviewCard(sessions: completedSessions, childName: child.name)
+                                .padding(.horizontal, 20)
+                        } else if completedSessions.count == 1 {
+                            // Show summary card even with just one session
+                            ChildProgressSummaryCard(sessions: completedSessions, childName: child.name)
                                 .padding(.horizontal, 20)
                         }
                         
@@ -83,6 +87,7 @@ struct GrowthView: View {
 
 struct ProgressOverviewCard: View {
     let sessions: [QuizSession]
+    let childName: String
     
     private var averageScore: Double {
         guard !sessions.isEmpty else { return 0 }
@@ -112,6 +117,22 @@ struct ProgressOverviewCard: View {
             return "➡️ Steady"
         }
     }
+    
+    private var summary: String {
+        let percentage = Int(averageScore)
+        
+        switch percentage {
+        case 80...100:
+            return "\(childName) demonstrates excellent emotional intelligence and decision-making. Continue providing consistent opportunities to practice these skills in real-life situations to maintain this strong foundation."
+        case 60..<80:
+            return "\(childName) shows good understanding of emotional regulation. With continued, consistent practice and supportive guidance, they will further develop these important life skills."
+        case 40..<60:
+            return "\(childName) is learning to navigate emotions and make healthy choices. Regular, structured practice with these scenarios and real-world application is needed to support their continued growth."
+        default:
+            return "\(childName) is beginning to learn about emotions and healthy coping strategies. Patient but consistent guidance, repeated practice, and celebrating small wins are essential to help build their confidence and skills."
+        }
+    }
+    
     
     var body: some View {
         VStack(spacing: 16) {
@@ -150,6 +171,66 @@ struct ProgressOverviewCard: View {
                     .foregroundColor(.secondary)
                 Spacer()
             }
+            
+            // Summary section
+            Divider()
+                .padding(.vertical, 8)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("How \(childName) is Doing")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(.primary)
+                
+                Text(summary)
+                    .font(.system(size: 14, design: .rounded))
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white.opacity(0.9))
+                .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        )
+    }
+}
+
+struct ChildProgressSummaryCard: View {
+    let sessions: [QuizSession]
+    let childName: String
+    
+    private var averageScore: Double {
+        guard !sessions.isEmpty else { return 0 }
+        let total = sessions.reduce(0.0) { $0 + $1.score.goodPercentage }
+        return total / Double(sessions.count)
+    }
+    
+    private var summary: String {
+        let percentage = Int(averageScore)
+        
+        switch percentage {
+        case 80...100:
+            return "\(childName) demonstrates excellent emotional intelligence and decision-making. Continue providing consistent opportunities to practice these skills in real-life situations to maintain this strong foundation."
+        case 60..<80:
+            return "\(childName) shows good understanding of emotional regulation. With continued, consistent practice and supportive guidance, they will further develop these important life skills."
+        case 40..<60:
+            return "\(childName) is learning to navigate emotions and make healthy choices. Regular, structured practice with these scenarios and real-world application is needed to support their continued growth."
+        default:
+            return "\(childName) is beginning to learn about emotions and healthy coping strategies. Patient but consistent guidance, repeated practice, and celebrating small wins are essential to help build their confidence and skills."
+        }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("How \(childName) is Doing")
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+            
+            Text(summary)
+                .font(.system(size: 14, design: .rounded))
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(20)
         .background(
