@@ -181,6 +181,37 @@ struct ChildCard: View {
     @State private var showDeleteConfirmation = false
     @State private var showAvatarMenu = false
     
+    // Generate random gradient colors based on child ID
+    private var avatarGradient: LinearGradient {
+        let colors = [
+            Color.vibrantBlue,
+            Color.vibrantGreen,
+            Color.vibrantOrange,
+            Color.vibrantPink,
+            Color.lavender,
+            Color.mint,
+            Color.peach,
+            Color.sky,
+            Color.cream,
+            Color.softPurple,
+            Color.softGreen,
+            Color.softOrange,
+            Color.softBlue,
+            Color.warmYellow
+        ]
+        
+        // Use child ID as seed for deterministic but varied colors
+        let hash = abs(child.id.hashValue)
+        let color1 = colors[hash % colors.count]
+        let color2 = colors[(hash / colors.count) % colors.count]
+        
+        return LinearGradient(
+            colors: [color1.opacity(0.3), color2.opacity(0.3)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+    
     var body: some View {
         HStack(spacing: 16) {
             // Avatar/Icon with menu
@@ -209,13 +240,7 @@ struct ChildCard: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.vibrantBlue.opacity(0.3), Color.vibrantGreen.opacity(0.3)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(avatarGradient)
                         .frame(width: 60, height: 60)
                     
                     Text(child.name.initials())
