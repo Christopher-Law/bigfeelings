@@ -102,15 +102,28 @@ struct ChildFormView: View {
         }
         .onAppear {
             // Always populate fields when editing a child
-            if let child = child {
-                name = child.name
-                if let ageValue = child.age {
-                    age = String(ageValue)
-                } else {
-                    age = ""
-                }
-                notes = child.notes ?? ""
+            populateFields()
+        }
+        .onChange(of: child) { _, newChild in
+            // Update fields if child changes (shouldn't happen with item-based sheet, but safety check)
+            populateFields()
+        }
+    }
+    
+    private func populateFields() {
+        if let child = child {
+            name = child.name
+            if let ageValue = child.age {
+                age = String(ageValue)
+            } else {
+                age = ""
             }
+            notes = child.notes ?? ""
+        } else {
+            // Clear fields for new child
+            name = ""
+            age = ""
+            notes = ""
         }
     }
     

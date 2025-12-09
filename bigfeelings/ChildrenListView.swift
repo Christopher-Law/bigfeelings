@@ -7,10 +7,23 @@
 
 import SwiftUI
 
+// Wrapper for sheet presentation to ensure proper view recreation
+struct ChildFormSheetItem: Identifiable {
+    let id: String
+    let child: Child?
+    
+    static func add() -> ChildFormSheetItem {
+        ChildFormSheetItem(id: "add", child: nil)
+    }
+    
+    static func edit(_ child: Child) -> ChildFormSheetItem {
+        ChildFormSheetItem(id: child.id, child: child)
+    }
+}
+
 struct ChildrenListView: View {
     @State private var children: [Child] = []
-    @State private var showAddChild = false
-    @State private var childToEdit: Child?
+    @State private var childFormSheetItem: ChildFormSheetItem?
     @State private var navigateToStories = false
     @State private var showAchievements: Child?
     
@@ -106,15 +119,11 @@ struct ChildrenListView: View {
             .onAppear {
                 loadChildren()
             }
-            .sheet(isPresented: $showAddChild) {
+            .sheet(item: $childFormSheetItem) { item in
                 NavigationStack {
-                    ChildFormView(child: childToEdit) { savedChild in
+                    ChildFormView(child: item.child) { savedChild in
                         saveChild(savedChild)
                     }
-                }
-                .onDisappear {
-                    // Clear the child to edit when sheet is dismissed
-                    childToEdit = nil
                 }
             }
             .navigationDestination(isPresented: $navigateToStories) {
@@ -133,13 +142,11 @@ struct ChildrenListView: View {
     }
     
     private func presentAddChild() {
-        childToEdit = nil
-        showAddChild = true
+        childFormSheetItem = .add()
     }
     
     private func editChild(_ child: Child) {
-        childToEdit = child
-        showAddChild = true
+        childFormSheetItem = .edit(child)
     }
     
     private func saveChild(_ child: Child) {

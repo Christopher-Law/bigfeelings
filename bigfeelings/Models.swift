@@ -161,7 +161,7 @@ struct QuizScore {
 
 // MARK: - Child/Client Models
 
-struct Child: Codable, Identifiable {
+struct Child: Codable, Identifiable, Equatable {
     let id: String
     var name: String
     var age: Int?
