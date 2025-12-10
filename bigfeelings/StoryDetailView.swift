@@ -9,7 +9,6 @@ import SwiftUI
 
 struct StoryDetailView: View {
     let story: Story
-    @StateObject private var ttsService = TextToSpeechService()
     @State private var selectedChoice: Choice?
     @State private var showFeedback = false
     @State private var showEnding = false
@@ -77,33 +76,6 @@ struct StoryDetailView: View {
                                 .fill(Color.white.opacity(0.8))
                         )
                         .padding(.horizontal, 20)
-                    
-                    // Text-to-speech button
-                    Button(action: {
-                        HapticFeedbackManager.shared.selection()
-                        if ttsService.isSpeaking {
-                            ttsService.stopSpeaking()
-                        } else {
-                            ttsService.speak("\(story.title). \(story.story)")
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: ttsService.isSpeaking ? "stop.circle.fill" : "speaker.wave.2.fill")
-                                .font(.system(size: 20))
-                            Text(ttsService.isSpeaking ? "Stop Reading" : "Read Story Aloud")
-                                .font(.system(size: 18, weight: .medium, design: .rounded))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 14)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(ttsService.isSpeaking ? Color.softOrange : Color.softBlue)
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .accessibilityLabel(ttsService.isSpeaking ? "Stop reading" : "Read story aloud")
-                    .accessibilityHint(ttsService.isSpeaking ? "Stops the text-to-speech narration" : "Plays the story text using text-to-speech")
                     
                     // Question
                     Text("What should \(story.animal) do?")
@@ -193,7 +165,6 @@ struct StoryDetailView: View {
     }
     
     private func selectChoice(_ choice: Choice) {
-        ttsService.stopSpeaking()
         HapticFeedbackManager.shared.selection()
         selectedChoice = choice
         showFeedback = true
