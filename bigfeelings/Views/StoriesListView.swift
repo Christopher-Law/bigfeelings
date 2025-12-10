@@ -222,8 +222,8 @@ struct StoriesListView: View {
         }
         .fullScreenCover(isPresented: $showQuiz) {
             if let ageRange = selectedAge {
-                // Randomly select 5 stories for exploration
-                let quizStories = Array(stories.shuffled().prefix(5))
+                // Randomly select 10 stories for the quiz from the age-appropriate stories
+                let quizStories = Array(stories.shuffled().prefix(10))
                 QuizView(stories: quizStories, ageRange: ageRange, child: activeChild, onNavigateToGrowth: {
                     // Navigate to Growth page after story exploration completion
                     navigateToGrowth = true
