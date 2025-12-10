@@ -30,40 +30,6 @@ Big Feelings is an educational app that uses storytelling and interactive activi
 - **Data Storage**: UserDefaults (local storage only)
 - **Dependencies**: None (pure Swift/SwiftUI)
 
-## Project Structure
-
-```
-bigfeelings/
-├── App/                    # App entry point and lifecycle
-│   ├── BigFeelingsApp.swift
-│   ├── AppDelegate.swift
-│   └── AppLifecycleHandler.swift
-├── Views/                   # SwiftUI views
-│   ├── WelcomeView.swift
-│   ├── ChildrenListView.swift
-│   ├── StoriesListView.swift
-│   ├── StoryDetailView.swift
-│   ├── QuizView.swift
-│   ├── FeelingsJournalView.swift
-│   ├── GrowthView.swift
-│   └── ...
-├── Models/                  # Data models
-│   ├── Models.swift         # Core models (Child, Story, QuizSession, etc.)
-│   └── Achievement.swift    # Achievement system models
-├── Managers/                # Business logic and data management
-│   ├── UserDefaultsManager.swift    # Local data persistence
-│   ├── AchievementManager.swift     # Achievement tracking
-│   ├── StoryLoader.swift            # Story data loading
-│   ├── QuizSummaryGenerator.swift   # Quiz result generation
-│   └── HapticFeedbackManager.swift  # Haptic feedback
-├── Utilities/               # Helper utilities
-│   └── ColorExtensions.swift
-└── Resources/              # Assets and data files
-    ├── Assets.xcassets/    # Images and colors
-    ├── scenarios.json      # Story data
-    └── PrivacyInfo.xcprivacy
-```
-
 ## Requirements
 
 ### Development Environment
@@ -177,7 +143,7 @@ All data is stored locally using `UserDefaults`:
 
 ## Story Data
 
-Stories are loaded from `Resources/scenarios.json`. The file contains:
+Stories are loaded from a JSON file containing:
 - Story metadata (title, feeling, animal character)
 - Story text
 - Multiple choice questions
@@ -188,7 +154,7 @@ Stories are loaded from `Resources/scenarios.json`. The file contains:
 
 - **Views**: SwiftUI views are kept simple and focused on presentation
 - **Managers**: Business logic and data operations are handled in Manager classes
-- **Models**: Data structures are defined in the Models directory
+- **Models**: Data structures are organized in model files
 - **State Management**: Uses `@State`, `@StateObject`, and `@ObservedObject` for SwiftUI state
 - **Navigation**: Uses `NavigationStack` for navigation flow
 
@@ -220,8 +186,8 @@ When contributing to this project:
 ### Runtime Issues
 
 - **Data not persisting**: Check that UserDefaults keys are consistent
-- **Stories not loading**: Verify `scenarios.json` is included in the app bundle
-- **Achievements not unlocking**: Check `AchievementManager` logic and data persistence
+- **Stories not loading**: Verify story data file is included in the app bundle
+- **Achievements not unlocking**: Check achievement manager logic and data persistence
 
 ## Resources
 
