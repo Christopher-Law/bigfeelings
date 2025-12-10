@@ -62,7 +62,7 @@ struct PracticeStoriesView: View {
                 .scrollIndicators(.visible)
             }
         }
-        .navigationTitle("Read Stories")
+        .navigationTitle("Browse Stories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

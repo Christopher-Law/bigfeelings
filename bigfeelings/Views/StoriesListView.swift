@@ -53,36 +53,36 @@ struct StoriesListView: View {
                         VStack(spacing: 16) {
                             // Activity selection cards - matching app design language
                             VStack(spacing: 16) {
-                                // Explore Stories card
+                                // Take Quiz card
                                 Button(action: {
                                     HapticFeedbackManager.shared.impact(style: .medium)
                                     showQuiz = true
                                 }) {
                                     ActivityCard(
                                         icon: "checkmark.circle.fill",
-                                        title: "Explore Stories",
+                                        title: "Take Quiz",
                                         subtitle: "Answer questions about feelings",
                                         iconColor: Color.vibrantGreen
                                     )
                                 }
                                 .buttonStyle(ActivityCardButtonStyle())
-                                .accessibilityLabel("Explore Stories")
+                                .accessibilityLabel("Take Quiz")
                                 .accessibilityHint("Answer questions about feelings with stories for this age group")
                                 
-                                // Read Stories card
+                                // Browse Stories card
                                 NavigationLink(destination: PracticeStoriesView(stories: stories, activeChild: activeChild)) {
                                     ActivityCard(
                                         icon: "book.fill",
-                                        title: "Read Stories",
-                                        subtitle: "Discover new adventures",
+                                        title: "Browse Stories",
+                                        subtitle: "Explore and read stories",
                                         iconColor: Color.vibrantBlue
                                     )
                                 }
                                 .simultaneousGesture(TapGesture().onEnded {
                                     HapticFeedbackManager.shared.impact(style: .medium)
                                 })
-                                .accessibilityLabel("Read Stories")
-                                .accessibilityHint("Read and practice with stories")
+                                .accessibilityLabel("Browse Stories")
+                                .accessibilityHint("Explore and read stories")
                                 
                                 // Feelings Journal card (if child is selected)
                                 if let child = activeChild {
