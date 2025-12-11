@@ -92,15 +92,9 @@ struct PracticeStoriesView: View {
                     }
                     .background(Color.white.opacity(0.5))
                     
-                    // Stories grid
+                    // Stories list
                     ScrollView {
-                        LazyVGrid(
-                            columns: [
-                                GridItem(.flexible(), spacing: 12),
-                                GridItem(.flexible(), spacing: 12)
-                            ],
-                            spacing: 12
-                        ) {
+                        LazyVStack(spacing: 16) {
                             ForEach(filteredStories) { story in
                                 StoryGridCard(
                                     story: story,
@@ -178,59 +172,54 @@ struct StoryGridCard: View {
     
     var body: some View {
         NavigationLink(destination: StoryDetailView(story: story)) {
-            VStack(spacing: 12) {
-                // Animal emoji - larger and centered
+            HStack(spacing: 16) {
+                // Animal emoji on left
                 Text(story.animalEmoji)
-                    .font(.system(size: 56))
+                    .font(.system(size: 64))
                     .accessibilityHidden(true)
-                    .frame(height: 70)
+                    .frame(width: 80, height: 80)
                 
-                // Title - centered
-                Text(story.title)
-                    .font(.system(size: 17, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(minHeight: 44)
-                
-                // Feeling - centered with subtle background
-                Text(story.feeling.capitalized)
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(
-                        Capsule()
-                            .fill(Color.softPurple.opacity(0.15))
-                    )
-                
-                // Favorite indicator (top right corner)
-                if isFavorited {
-                    VStack {
-                        HStack {
-                            Spacer()
+                // Title and feeling on right
+                VStack(alignment: .leading, spacing: 8) {
+                    // Title
+                    Text(story.title)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                    
+                    // Feeling
+                    Text("Feeling: \(story.feeling)")
+                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    // Favorite indicator
+                    if isFavorited {
+                        HStack(spacing: 4) {
                             Image(systemName: "heart.fill")
                                 .font(.system(size: 14))
                                 .foregroundColor(.red)
                                 .accessibilityLabel("Favorite")
+                            Text("Favorite")
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .foregroundColor(.secondary)
                         }
-                        Spacer()
+                        .padding(.top, 4)
                     }
-                    .frame(maxWidth: .infinity)
                 }
+                
+                Spacer()
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 180)
             .padding(20)
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color.white)
-                    .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
+                    .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
             )
         }
         .buttonStyle(.plain)
-        .scaleEffect(isPressed ? 0.96 : 1.0)
+        .scaleEffect(isPressed ? 0.98 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         .onTapGesture {
             withAnimation {
